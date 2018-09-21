@@ -106,7 +106,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public void insertWorktime(String empno) {
+	public void insertWorktime(String empno, String name) {
 		// TODO Auto-generated method stub
 		//取得第一個星期日
 		Calendar cal = Calendar.getInstance();
@@ -122,8 +122,8 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE)");
-			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null)");
+			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE, NAME)");
+			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null, ?)");
 			
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
@@ -132,6 +132,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			while(currentMonth == nextMonth) {
 			    String firstDayOfMonth = sdfDate.format(cal.getTime());
 				pstmt.setString(2, firstDayOfMonth);
+				pstmt.setString(3, name);
 				rs = pstmt.executeQuery();
 				cal.add(Calendar.DAY_OF_MONTH, 7);
 				nextMonth = cal.get(Calendar.MONTH)+1;
@@ -203,16 +204,22 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		try {
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append("select * from submission_history where empno = ? ");
-			sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
+			sql.append("select * from submission_history ");
+			sql.append("where week_first_day >= TO_DATE(?,'YYYY-MM') ");
 			sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
+			if(empno != null) {
+				sql.append("and empno = ? ");
+			}
 			sql.append("order by week_first_day");
 			
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,empno);
+
+			pstmt.setString(1,searchMonth);
 			pstmt.setString(2,searchMonth);
-			pstmt.setString(3,searchMonth);
+			if(empno != null) {
+				pstmt.setString(3,empno);
+			}
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
@@ -259,6 +266,50 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			close();
 		}
 		return true;
+	}
+
+	@Override
+	public List<Worktime> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth) {
+		// TODO Auto-generated method stub
+		List<Worktime> worktimeList = new ArrayList<Worktime>();
+		
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from submission_history ");
+			System.out.println("A");
+			if(nameOrEmpno.equals("name")) {
+				System.out.println("B");
+				sql.append("where name = ?");
+			}else {
+				System.out.println("C");
+				sql.append("where empno = ?");
+			}
+			if(inputMonth != null){
+				System.out.println("D");
+				sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
+				sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
+			}
+			sql.append("order by week_first_day");
+			System.out.println("E");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,inputSearch);
+			if(inputMonth != null){
+				System.out.println("F");
+				pstmt.setString(2,inputMonth);
+				pstmt.setString(3,inputMonth);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				worktimeList.add(createWorktime(rs));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return worktimeList;	
 	}
 
 }

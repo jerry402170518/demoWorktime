@@ -17,9 +17,9 @@ public class WorktimeService {
 		return wDao.getWorktime(empno);
 	}
 
-	public void insertWorktime(String empno) {
+	public void insertWorktime(String empno,String name) {
 		// TODO Auto-generated method stub
-		wDao.insertWorktime(empno);
+		wDao.insertWorktime(empno, name);
 	}
 
 	public List<Integer> getHours(List<Worktime> worktimeList) {
@@ -27,7 +27,7 @@ public class WorktimeService {
 		return wDao.getHours(worktimeList);
 	}
 
-	public List<Worktime> getPassWorktime(String empno, String searchMonth) {
+	public List<Worktime> getWorktime(String empno, String searchMonth) {
 		// TODO Auto-generated method stub
 		return wDao.getWorktime(empno,searchMonth);
 	}
@@ -35,6 +35,11 @@ public class WorktimeService {
 	public boolean checkCurrentMonth(String empno) {
 		// TODO Auto-generated method stub
 		return wDao.checkCurrentMonth(empno);
+	}
+
+	public List<Worktime> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth) {
+		// TODO Auto-generated method stub
+		return wDao.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
 	}
 
 

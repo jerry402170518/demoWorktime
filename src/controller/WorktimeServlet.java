@@ -29,7 +29,7 @@ public class WorktimeServlet extends HttpServlet{
 	private static final String WRITEWORKTIME_PAGE = "/WEB-INF/view/worktime/empWriteWorktime.jsp";
 	private static final String SEARCHWORKTIME_PAGE = "/WEB-INF/view/employee/empSearchWorktime.jsp";
 
-	private static final String SEARCHEMPWORKTIME_PAGE = "/WEB-INF/view/manager/mgrSearchEmpWorktime.jsp";
+	private static final String SEARCHEMPWORKTIME_PAGE = "/WEB-INF/view/manager/mgrSearchWorktime.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -81,11 +81,12 @@ public class WorktimeServlet extends HttpServlet{
 		// TODO Auto-generated method stub
 		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
 		String empno = loginInfo.get("empno");
+		String name = loginInfo.get("name");
 		List<String> weekLastDays = new ArrayList<String>();
 		List<Worktime> worktimeList = worktimeService.getWorktimeInfo(empno);
 		//檢查本月是否已建立工時表
 		if(worktimeService.checkCurrentMonth(empno)) {
-			worktimeService.insertWorktime(empno);
+			worktimeService.insertWorktime(empno,name);
 			worktimeList = worktimeService.getWorktimeInfo(empno);
 		}
 		
@@ -116,7 +117,7 @@ public class WorktimeServlet extends HttpServlet{
 		if(searchMonth == null) {
 			return;
 		}
-		List<Worktime> worktimeList = worktimeService.getPassWorktime(empno,searchMonth);
+		List<Worktime> worktimeList = worktimeService.getWorktime(empno,searchMonth);
 		if(worktimeList.size() == 0) {
 			return;
 		}
@@ -144,17 +145,34 @@ public class WorktimeServlet extends HttpServlet{
 		String nameOrEmpno = request.getParameter("nameOrEmpno");
 		String inputSearch = request.getParameter("inputSearch");
 		System.out.println(inputMonth);
+		System.out.println(inputSearch);
+		System.out.println("test");
 		List<Worktime> worktimeList = new ArrayList<>();
 		
-		//輸入欄位全部未輸入，直接轉交頁面
+		//姓名與員編都未輸入，直接轉交頁面
 		if(inputMonth == null && inputSearch == null) {
+			System.out.println("姓名與員編都未輸入，直接轉交頁面");
 			return;
 		}
 		//只輸入姓名或員編
 		if(inputMonth == null && inputSearch != null) {
-//			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno,inputSearch);
+			System.out.println("只輸入姓名或員編");
+			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
 		}
+		//只輸入月份
+		if(inputMonth != null && inputSearch == null) {
+			String empno = null;
+			System.out.println("只輸入月份");
+			worktimeList = worktimeService.getWorktime(empno, inputMonth);
+		}
+		//姓名與員編都輸入
+		if(inputMonth != null && inputSearch != null) {
+			System.out.println("姓名與員編都輸入");
+			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+		}
+		//查無資料，直接轉交頁面
 		if(worktimeList.size() == 0) {
+			System.out.println("查無資料，直接轉交頁面");
 			return;
 		}
 		List<Integer> hours = worktimeService.getHours(worktimeList);

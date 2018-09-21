@@ -12,13 +12,15 @@ public interface WorktimeDAO {
 	
 	public List<Worktime> getWorktime(String empno);
 
-	public void insertWorktime(String empno);
+	public void insertWorktime(String empno, String name);
 
 	public List<Integer> getHours(List<Worktime> worktimeList);
 
 	public List<Worktime> getWorktime(String empno, String searchMonth);
 
 	public boolean checkCurrentMonth(String empno);
+
+	public List<Worktime> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth);
 
 	
 

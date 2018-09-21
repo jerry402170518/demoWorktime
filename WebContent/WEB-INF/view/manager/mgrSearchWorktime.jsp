@@ -87,11 +87,11 @@
                 查詢員工工時
             </div>
             <div class="card-body">
-                <form action="Employee?action=mgrSearchWorktime_page" method="post" class="form-inline mb-4 row justify-content-center">
+                <form action="Worktime?action=mgrSearchWorktime_page" method="post" class="form-inline mb-4 row justify-content-center">
                     <div class="form-group">
                         <label for="weekSelect" class="col-form-label text-right">請選擇月別</label>
                         <div class="col pr-0">
-                            <input type="month" class="form-control" name="inputMonth">
+                            <input type="text" class="form-control" name="inputMonth">
                         </div>
                     </div>
                     <div class="form-group">
@@ -112,131 +112,60 @@
                     </div>
                 </form>
                 <table class="table table-bordered mb-0 table-hover text-center">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th rowspan="2" class="text-center align-middle">日期</th>
-                            <th rowspan="2" class="text-center align-middle">員編</th>
-                            <th rowspan="2" class="text-center align-middle">姓名</th>
-                            <th colspan="2" class="text-center align-middle">星期日</th>
-                            <th colspan="2" class="text-center align-middle">星期一</th>
-                            <th colspan="2" class="text-center align-middle">星期二</th>
-                            <th colspan="2" class="text-center align-middle">星期三</th>
-                            <th colspan="2" class="text-center align-middle">星期四</th>
-                            <th colspan="2" class="text-center align-middle">星期五</th>
-                            <th colspan="2" class="text-center align-middle">星期六</th>
-                            <th rowspan="2" class="text-center align-middle">詳細</th>
-                        </tr>
-                        <tr>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center align-middle">
-                            <td>7/1-7/7</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    詳細
+                <thead class="thead-dark">
+                    <tr>
+                        <th>日期</th>
+                        <th>狀態</th>
+                        <th>星期日</th>
+                        <th>星期一</th>
+                        <th>星期二</th>
+                        <th>星期三</th>
+                        <th>星期四</th>
+                        <th>星期五</th>
+                        <th>星期六</th>
+                        <th>詳細!!</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
+                		
+                		<tr>
+                		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
+	                 	   <td><c:out value="${worktime.status}" /></td>
+	                 	    <% for(int i = 0; i < 7; i++) { 
+	                 	    	pageContext.setAttribute("i", i);
+	                		%>
+					            <td>${requestScope.hours[7*loop.index+i]}</td>
+					        <% } %>
+	                       <td>
+	                       		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#worktimeDetailModal${loop.index}">
+                                    	    詳細
                                 </button>
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/8-7/14</td>
-
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/15-7/21</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/22-7/29</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+	                       </td>
+	                       	<!-- detail Modal -->
+					        <div class="modal fade" id="worktimeDetailModal${loop.index}" tabindex="-1" role="dialog" aria-labelledby="worktimeDetailModal${looploop.index}" aria-hidden="true">
+					            <div class="modal-dialog modal-lg" role="document">
+					                <div class="modal-content">
+					                    <div class="modal-header bg-info">
+					                        <h5 class="modal-title text-white font-weight-bold" id="worktimeDetailModal${loop.index}">詳細工時資訊</h5>
+					                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                            <span aria-hidden="true">&times;</span>
+					                        </button>
+					                    </div>
+					                    <div class="modal-body">
+					                        <iframe src="WorktimeDetail?action=getWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1200px"></iframe>
+					                    </div>
+					                    <div class="modal-footer">
+					                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+	                 	</tr>
+                	</c:forEach>
+	                
+                </tbody>
+            </table>
             </div>
         </div>
     </div>

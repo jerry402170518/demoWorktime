@@ -41,7 +41,7 @@
                     <a class="nav-link" href="mgrCallWorktime.html">催繳工時</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Employee?action=searcgEmpWorktime_pgae">查詢員工工時</a>
+                    <a class="nav-link" href="Worktime?action=mgrSearchWorktime_page">查詢員工工時</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Employee?action=searchEmpInfo_page">查詢員工資料</a>
