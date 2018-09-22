@@ -35,10 +35,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCheckWorktime.html">審核工時</a>
+                    <a class="nav-link" href="Worktime?action=mgrCheckWorktime_page">審核工時</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCallWorktime.html">催繳工時</a>
+                    <a class="nav-link" href="Worktime?action=mgrCallWorktime_page">催繳工時</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Worktime?action=mgrSearchWorktime_page">查詢員工工時</a>

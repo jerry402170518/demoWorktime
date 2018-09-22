@@ -25,4 +25,9 @@ public class WorktimeDetailService {
 		return wDao.getWorktimeDetailInfo(empno,weekFirstDay);
 	}
 
+	public List<WorktimeDetail> mgrGetWorktimeDetailInfo(String weekFirstDay) {
+		// TODO Auto-generated method stub
+		return wDao.mgrGetWorktimeDetailInfo(weekFirstDay);
+	}
+
 }

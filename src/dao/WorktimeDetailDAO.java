@@ -12,4 +12,6 @@ public interface WorktimeDetailDAO {
 
 	List<WorktimeDetail> getWorktimeDetailInfo(String empno, String weekFirstDay);
 
+	List<WorktimeDetail> mgrGetWorktimeDetailInfo(String weekFirstDay);
+
 }

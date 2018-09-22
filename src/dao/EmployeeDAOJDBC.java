@@ -174,7 +174,7 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			employee.setEmpno(rs.getString("EMPNO"));
 			employee.setName(rs.getString("NAME"));
 			employee.setPosition(rs.getString("POSITION"));
-			employee.setId(rs.getString("ID"));
+			employee.setIdNumber(rs.getString("ID_NUMBER"));
 			employee.setEmail(rs.getString("EMAIL"));
 			return employee;
 		} catch (SQLException e) {

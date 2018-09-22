@@ -56,14 +56,18 @@ public class WorktimeDetailServlet extends HttpServlet{
 					page = doInsertWorktime(request);
 					request.getRequestDispatcher(page).forward(request, response);
 					break;
-				//取得詳細工時資訊
+				//員工取得詳細工時資訊
 				case "getWorktimeDetail":
 					doGetEmpWorktimeDetail(request);
 					request.getRequestDispatcher(WORKTIME_DETAIL_PAGE).forward(request, response);
 					break;
+				//主管取得詳細工時資訊
+				case "mgrGetWorktimeDetail":
+					doMgrGetEmpWorktimeDetail(request);
+					request.getRequestDispatcher(WORKTIME_DETAIL_PAGE).forward(request, response);
+					break;
 			}
 		}
-
 
 
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,6 +83,7 @@ public class WorktimeDetailServlet extends HttpServlet{
 			Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
 			String empno = loginInfo.get("empno");
 			String weekFirstDay = request.getParameter("weekFirstDay");
+			System.out.println(weekFirstDay);
 			List<WorktimeDetail> worktimeDetailList = worktimeDetailService.getWorktimeDetailInfo(empno, weekFirstDay);
 			
 			request.setAttribute("worktimeDetailList", worktimeDetailList);
@@ -117,4 +122,16 @@ public class WorktimeDetailServlet extends HttpServlet{
 			System.out.println("新增成功");
 			return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
 		}
+		
+
+		private void doMgrGetEmpWorktimeDetail(HttpServletRequest request) {
+			// TODO Auto-generated method stub
+			String weekFirstDay = request.getParameter("weekFirstDay");
+			System.out.println(weekFirstDay);
+			List<WorktimeDetail> worktimeDetailList = worktimeDetailService.mgrGetWorktimeDetailInfo(weekFirstDay);
+			System.out.println(worktimeDetailList.size());
+			request.setAttribute("worktimeDetailList", worktimeDetailList);
+			request.setAttribute("weekFirstDay",weekFirstDay);
+		}
+
 }

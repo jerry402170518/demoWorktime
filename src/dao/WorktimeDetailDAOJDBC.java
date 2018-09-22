@@ -146,4 +146,35 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}
 	}
 
+	@Override
+	public List<WorktimeDetail> mgrGetWorktimeDetailInfo(String weekFirstDay) {
+		// TODO Auto-generated method stub
+		List<WorktimeDetail> worktimeDetailList = new ArrayList<>();
+		
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from working_records ");
+			sql.append("where working_date between TO_DATE(?,'YYYY-MM-DD') ");
+			sql.append("and TO_DATE(?,'YYYY-MM-DD')+6");
+			sql.append("order by working_date");
+
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,weekFirstDay);
+			pstmt.setString(2,weekFirstDay);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				worktimeDetailList.add(createWorktimeDetail(rs));
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return worktimeDetailList;
+	}
+
 }

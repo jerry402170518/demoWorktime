@@ -100,7 +100,7 @@
 					        <% } %>
 	                       <td>
 	                       <c:choose>
-							    <c:when  test="${worktime.status=='已通過'}">
+							    <c:when  test="${worktime.status=='已通過' || worktime.status=='審核中'}">
 								        
 							    </c:when>    
 							    <c:otherwise>

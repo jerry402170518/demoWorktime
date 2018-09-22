@@ -5,20 +5,18 @@ import java.sql.Date;
 public class CallWorktime {
 	private static final long serialVersionUID = 1L;
 
-	private String empNo;
+	private String empno;
 
 	private Date weekFirstDay;
 	
-	private Integer callTimes;
-	
-	private Employee employee;
+	private Date urgeDate;
 
-	public String getEmpNo() {
-		return empNo;
+	public String getEmpno() {
+		return empno;
 	}
 
-	public void setEmpNo(String empNo) {
-		this.empNo = empNo;
+	public void setEmpno(String empno) {
+		this.empno = empno;
 	}
 
 	public Date getWeekFirstDay() {
@@ -29,22 +27,15 @@ public class CallWorktime {
 		this.weekFirstDay = weekFirstDay;
 	}
 
-	public Integer getCallTimes() {
-		return callTimes;
+	public Date getUrgeDate() {
+		return urgeDate;
 	}
 
-	public void setCallTimes(Integer callTimes) {
-		this.callTimes = callTimes;
-	}
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setUrgeDate(Date urgeDate) {
+		this.urgeDate = urgeDate;
 	}
 	
+
 	
 	
 

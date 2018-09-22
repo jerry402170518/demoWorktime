@@ -15,7 +15,17 @@ public class Worktime {
 	private String note;
 
 	private String status;
+	
+	private String name;
 
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Worktime() {
 	}

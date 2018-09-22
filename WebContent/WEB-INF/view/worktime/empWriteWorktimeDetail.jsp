@@ -129,16 +129,18 @@
                                     
                                 </td>
                                 <td class="align-middle text-center">
-                            		<button type="submit" class="btn btn-secondary" formaction="WorktimeDetail?action=insertWorktime">提交</button>
+                            		<button type="submit" class="btn btn-secondary" formaction="WorktimeDetail?action=insertWorktime">暫存</button>
                                     
                                 </td>
                             </tr>
                        		 </form>
+                       		 <form action="Worktime?action=submitWortkime">
                             <tr>
                             	<td colspan="5" class="align-middle">
-               						<button type="button" class="btn btn-warning" id="addProjectBtn">新增專案</button>
+               						<button type="submit" class="btn btn-warning" id="addProjectBtn">提交本周工時</button>
                					</td>
                             </tr>
+                            </form>
                     </tbody>
                 </table>
                 <!--  -->

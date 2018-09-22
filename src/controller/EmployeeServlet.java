@@ -14,11 +14,10 @@ import model.Worktime;
 import service.EmployeeService;
 
 public class EmployeeServlet extends HttpServlet{
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private EmployeeService employeeService = new EmployeeService();
 
-	private static final String SEARCHWORKTIME_PAGE = "/WEB-INF/view/employee/empSearchWorktime.jsp";
 	private static final String SEARCHEMPINFO_PAGE = "/WEB-INF/view/manager/mgrSearchEmpInfo.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

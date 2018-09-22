@@ -106,7 +106,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public void insertWorktime(String empno, String name) {
+	public void insertWorktime(String empno) {
 		// TODO Auto-generated method stub
 		//取得第一個星期日
 		Calendar cal = Calendar.getInstance();
@@ -122,8 +122,8 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE, NAME)");
-			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null, ?)");
+			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE)");
+			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null)");
 			
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
@@ -132,7 +132,6 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			while(currentMonth == nextMonth) {
 			    String firstDayOfMonth = sdfDate.format(cal.getTime());
 				pstmt.setString(2, firstDayOfMonth);
-				pstmt.setString(3, name);
 				rs = pstmt.executeQuery();
 				cal.add(Calendar.DAY_OF_MONTH, 7);
 				nextMonth = cal.get(Calendar.MONTH)+1;
@@ -276,27 +275,23 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("select * from submission_history ");
-			System.out.println("A");
+			sql.append("select employee.empno,  employee.name, submission_history.* ");
+			sql.append("from submission_history ");
+			sql.append("inner join employee on submission_history.empno = employee.empno ");
 			if(nameOrEmpno.equals("name")) {
-				System.out.println("B");
-				sql.append("where name = ?");
+				sql.append("where employee.name = ?");
 			}else {
-				System.out.println("C");
-				sql.append("where empno = ?");
+				sql.append("where employee.empno = ?");
 			}
-			if(inputMonth != null){
-				System.out.println("D");
+			if(!inputMonth.isEmpty()){
 				sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
 				sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
 			}
 			sql.append("order by week_first_day");
-			System.out.println("E");
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1,inputSearch);
-			if(inputMonth != null){
-				System.out.println("F");
+			if(!inputMonth.isEmpty()){
 				pstmt.setString(2,inputMonth);
 				pstmt.setString(3,inputMonth);
 			}

@@ -28,8 +28,9 @@ public class WorktimeServlet extends HttpServlet{
 	
 	private static final String WRITEWORKTIME_PAGE = "/WEB-INF/view/worktime/empWriteWorktime.jsp";
 	private static final String SEARCHWORKTIME_PAGE = "/WEB-INF/view/employee/empSearchWorktime.jsp";
-
 	private static final String SEARCHEMPWORKTIME_PAGE = "/WEB-INF/view/manager/mgrSearchWorktime.jsp";
+	private static final String MGR_CHECK_WORKTIME_PAGE = "/WEB-INF/view/manager/mgrCheckWorktime.jsp";
+	private static final String MGR_CALL_WORKTIME_PAGE = "/WEB-INF/view/manager/mgrCallWorktime.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,7 +48,7 @@ public class WorktimeServlet extends HttpServlet{
 			case "getWriteWorktime":
 				doGetEmpWorktime(request);
 				break;
-			// 轉交至填寫工時頁面
+			//轉交至填寫工時頁面
 			case "writeWorktime_page":
 				doGetEmpWorktime(request);
 				request.getRequestDispatcher(WRITEWORKTIME_PAGE).forward(request, response);
@@ -63,9 +64,26 @@ public class WorktimeServlet extends HttpServlet{
 				break;
 			//轉交至主管查詢員工工時頁面
 			case "mgrSearchWorktime_page":
+				request.getRequestDispatcher(SEARCHEMPWORKTIME_PAGE).forward(request, response);
+				break;
+			//主管查詢員工工時
+			case "mgrSearchWorktime":
 				doSearchEmpWorktime(request);
 				request.getRequestDispatcher(SEARCHEMPWORKTIME_PAGE).forward(request, response);
 				break;
+			//轉交至主管審核工時頁面
+			case "mgrCheckWorktime_page":
+				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				break;
+			//主管查詢欲審核之工時:
+			case "mgrSearchCheckWorktime":
+				doSearchEmpWorktime(request);
+				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				break;
+			//轉交至主管催繳工時頁面
+			case "mgrCallWorktime_page":
+				doGetUrgeList(request);
+				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
 		}
 
 		
@@ -86,7 +104,7 @@ public class WorktimeServlet extends HttpServlet{
 		List<Worktime> worktimeList = worktimeService.getWorktimeInfo(empno);
 		//檢查本月是否已建立工時表
 		if(worktimeService.checkCurrentMonth(empno)) {
-			worktimeService.insertWorktime(empno,name);
+			worktimeService.insertWorktime(empno);
 			worktimeList = worktimeService.getWorktimeInfo(empno);
 		}
 		
@@ -99,7 +117,6 @@ public class WorktimeServlet extends HttpServlet{
 			String weekLastDay = sdf.format(c.getTime());
 			weekLastDays.add(weekLastDay);
         }
-		
 		request.setAttribute("hours", hours);
 		request.setAttribute("weekLastDays", weekLastDays);
 		request.setAttribute("worktimeList", worktimeList);
@@ -146,27 +163,22 @@ public class WorktimeServlet extends HttpServlet{
 		String inputSearch = request.getParameter("inputSearch");
 		System.out.println(inputMonth);
 		System.out.println(inputSearch);
-		System.out.println("test");
 		List<Worktime> worktimeList = new ArrayList<>();
 		
-		//姓名與員編都未輸入，直接轉交頁面
-		if(inputMonth == null && inputSearch == null) {
-			System.out.println("姓名與員編都未輸入，直接轉交頁面");
-			return;
-		}
+	
 		//只輸入姓名或員編
-		if(inputMonth == null && inputSearch != null) {
+		if(inputMonth.isEmpty() && !inputSearch.isEmpty()) {
 			System.out.println("只輸入姓名或員編");
 			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
 		}
 		//只輸入月份
-		if(inputMonth != null && inputSearch == null) {
+		if(!inputMonth.isEmpty() && inputSearch.isEmpty()) {
 			String empno = null;
 			System.out.println("只輸入月份");
 			worktimeList = worktimeService.getWorktime(empno, inputMonth);
 		}
 		//姓名與員編都輸入
-		if(inputMonth != null && inputSearch != null) {
+		if(!inputMonth.isEmpty() && !inputSearch.isEmpty()) {
 			System.out.println("姓名與員編都輸入");
 			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
 		}
@@ -191,6 +203,12 @@ public class WorktimeServlet extends HttpServlet{
 		request.setAttribute("worktimeList", worktimeList);
 	}
 
+
+	private void doGetUrgeList(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		List<Worktime> worktimeList = worktimeService.
+		
+	}
 
 
 }

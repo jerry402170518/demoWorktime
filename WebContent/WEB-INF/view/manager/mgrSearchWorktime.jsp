@@ -87,7 +87,7 @@
                 查詢員工工時
             </div>
             <div class="card-body">
-                <form action="Worktime?action=mgrSearchWorktime_page" method="post" class="form-inline mb-4 row justify-content-center">
+                <form action="Worktime?action=mgrSearchWorktime" method="post" class="form-inline mb-4 row justify-content-center">
                     <div class="form-group">
                         <label for="weekSelect" class="col-form-label text-right">請選擇月別</label>
                         <div class="col pr-0">
@@ -143,7 +143,7 @@
                                 </button>
 	                       </td>
 	                       	<!-- detail Modal -->
-					        <div class="modal fade" id="worktimeDetailModal${loop.index}" tabindex="-1" role="dialog" aria-labelledby="worktimeDetailModal${looploop.index}" aria-hidden="true">
+					        <div class="modal fade" id="worktimeDetailModal${loop.index}" tabindex="-1" role="dialog" aria-labelledby="worktimeDetailModal${loop.index}" aria-hidden="true">
 					            <div class="modal-dialog modal-lg" role="document">
 					                <div class="modal-content">
 					                    <div class="modal-header bg-info">
@@ -153,7 +153,7 @@
 					                        </button>
 					                    </div>
 					                    <div class="modal-body">
-					                        <iframe src="WorktimeDetail?action=getWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1200px"></iframe>
+					                        <iframe src="WorktimeDetail?action=mgrGetWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1150px"></iframe>
 					                    </div>
 					                    <div class="modal-footer">
 					                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
@@ -173,25 +173,7 @@
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
 
-    <!-- detail Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-white font-weight-bold" id="exampleModalLabel">詳細工時資訊</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <iframe src="worktimeDetail.html" frameborder="0" height="650px" width="1150px" ></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- personal Modal-->
     <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

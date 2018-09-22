@@ -87,176 +87,93 @@
                 工時審核
             </div>
             <div class="card-body">
-                <form class="form-inline mb-4 row justify-content-center">
+                <form action="Worktime?action=mgrSearchCheckWorktime" method="post" class="form-inline mb-4 row justify-content-center">
+                
                     <div class="form-group">
-                        <label for="weekSelect" class="col-form-label text-right">請選擇周別</label>
+                        <label for="weekSelect" class="col-form-label text-right">請選擇月別</label>
                         <div class="col pr-0">
-                            <input type="week" class="form-control" id="weekSelect">
+                            <input type="text" class="form-control" name="inputMonth">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col">
-                            ，依照
-                            <select class="form-control ml-1">
-                                <option>員工編號</option>
-                                <option>員工姓名</option>
+                         	   ，依照
+                            <select class="form-control ml-1" name="nameOrEmpno">
+                                <option value="name">員工姓名</option>
+                                <option value="empno">員工編號</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        查詢
-                        <input type="text" class="form-control ml-2" id="NameOrID" placeholder="輸入員編或姓名">
+                	        查詢
+                        <input type="text" class="form-control ml-2" name="inputSearch" placeholder="輸入員編或姓名">
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary ml-2">查詢</button>
+                        <button type="submit" class="btn btn-primary ml-2">查詢</button>
                     </div>
                 </form>
                 <table class="table table-bordered mb-0 table-hover text-center">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th rowspan="2" class="text-center align-middle">日期</th>
-                            <th rowspan="2" class="text-center align-middle">員編</th>
-                            <th rowspan="2" class="text-center align-middle">姓名</th>
-                            <th colspan="2" class="text-center align-middle">星期日</th>
-                            <th colspan="2" class="text-center align-middle">星期一</th>
-                            <th colspan="2" class="text-center align-middle">星期二</th>
-                            <th colspan="2" class="text-center align-middle">星期三</th>
-                            <th colspan="2" class="text-center align-middle">星期四</th>
-                            <th colspan="2" class="text-center align-middle">星期五</th>
-                            <th colspan="2" class="text-center align-middle">星期六</th>
-                            <th rowspan="2" class="text-center align-middle">詳細</th>
-                            <th rowspan="2" class="text-center align-middle">
-                                <button type="button" class="btn btn-light font-weight-bold toggle-button">全選</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                            <th>平</th>
-                            <th>加</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-center align-middle">
-                            <td>7/1-7/7</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    詳細
+                <thead class="thead-dark">
+                    <tr>
+                        <th>日期</th>
+                        <th>狀態</th>
+                        <th>星期日</th>
+                        <th>星期一</th>
+                        <th>星期二</th>
+                        <th>星期三</th>
+                        <th>星期四</th>
+                        <th>星期五</th>
+                        <th>星期六</th>
+                        <th>詳細!!</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
+                		<c:if test="${worktime.status == '審核中'}">
+                		<tr>
+                		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
+	                 	   <td><c:out value="${worktime.status}" /></td>
+	                 	    <% for(int i = 0; i < 7; i++) { 
+	                 	    	pageContext.setAttribute("i", i);
+	                		%>
+					            <td>${requestScope.hours[7*loop.index+i]}</td>
+					        <% } %>
+	                       <td>
+	                       		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#worktimeDetailModal${loop.index}">
+                                    	    詳細
                                 </button>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="checkboxSize">
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/8-7/14</td>
-
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="checkboxSize">
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/15-7/21</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="checkboxSize">
-                            </td>
-                        </tr>
-                        <tr class="text-center align-middle">
-                            <td>7/22-7/29</td>
-                            <td>A00001</td>
-                            <td>林彥儒</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td>8</td>
-                            <td>4</td>
-                            <td class="bg-holiday"></td>
-                            <td class="bg-holiday"></td>
-                            <td>
-                                <a href="#" class="btn btn-info">詳細</a>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="checkboxSize">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row d-flex">
-                    <div class="col text-center mt-3">
-                        <button type="button" class="btn btn-success text-center" style="width: 15%">通過</button>
-                    </div>
-                </div>
+	                       </td>
+	                       	<!-- detail Modal -->
+						    <div class="modal fade" id="worktimeDetailModal${loop.index}" tabindex="-1" role="dialog" aria-labelledby="worktimeDetailModal${loop.index}" aria-hidden="true">
+						        <div class="modal-dialog modal-lg" role="document">
+						            <div class="modal-content">
+						                <div class="modal-header bg-info">
+						                    <h5 class="modal-title text-white font-weight-bold" id="worktimeDetailModal${loop.index}">詳細工時資訊</h5>
+						                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                        <span aria-hidden="true">&times;</span>
+						                    </button>
+						                </div>
+						                <div class="modal-body">
+						                    <iframe src="WorktimeDetail?action=mgrGetWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1150px"></iframe>
+						                </div>
+						                <div class="modal-footer">
+						                	<form action="">
+							                	<textarea name="" id="" cols="40" rows="3" placeholder="未通過請填寫原因，再點選未通過"></textarea>
+							                    <button type="button" class="btn btn-danger mr-auto">未通過</button>
+							                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+							                    <button type="button" class="btn btn-primary">通過</button>
+						                	</form>
+						                    
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+	                 	</tr>
+	                 	</c:if>
+                	</c:forEach>
+	                
+                </tbody>
+            </table>
             </div>
         </div>
     </div>
@@ -264,28 +181,7 @@
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
 
-    <!-- detail Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-white font-weight-bold" id="exampleModalLabel">詳細工時資訊</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <iframe src="worktimeDetail.html" frameborder="0" height="650px" width="1150px" ></iframe>
-                </div>
-                <div class="modal-footer">
-                    <textarea name="" id="" cols="40" rows="3" placeholder="未通過請填寫原因，再點選未通過"></textarea>
-                    <button type="button" class="btn btn-danger mr-auto">未通過</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                    <button type="button" class="btn btn-primary">通過</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- personal Modal-->
     <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

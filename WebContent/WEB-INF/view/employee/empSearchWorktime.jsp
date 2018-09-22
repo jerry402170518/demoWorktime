@@ -136,7 +136,7 @@
 					                        </button>
 					                    </div>
 					                    <div class="modal-body">
-					                        <iframe src="WorktimeDetail?action=getWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1200px"></iframe>
+					                        <iframe src="WorktimeDetail?action=getWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1150px"></iframe>
 					                    </div>
 					                    <div class="modal-footer">
 					                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
