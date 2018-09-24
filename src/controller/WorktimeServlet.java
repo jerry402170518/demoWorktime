@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Worktime;
+import model.SubmissionHistory;
 import model.WorktimeDetail;
 import service.WorktimeService;
+import model.NoSubmitWorktime;
 
 public class WorktimeServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -81,13 +82,32 @@ public class WorktimeServlet extends HttpServlet{
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
 				break;
 			//轉交至主管催繳工時頁面
-			case "mgrCallWorktime_page":
-				doGetUrgeList(request);
+			case "mgrUrgeWorktime_page":
+				doGetNoSubmitWorktime(request);
+				request.getRequestDispatcher(MGR_CALL_WORKTIME_PAGE).forward(request, response);
+				break;
+			//催繳工時
+			case "urgeWorktime":
+				doUrgeWorktime(request);
+				doGetNoSubmitWorktime(request);
+				request.getRequestDispatcher(MGR_CALL_WORKTIME_PAGE).forward(request, response);
+				break;
+			//主管審核工時為未通過
+			case "worktimeCheckNoPass":
+				checkNoPass(request);
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				break;
+			//主管審核工時為已通過
+			case "worktimeCheckPass":
+				checkPass(request);
+				System.out.println("PASS");
+				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				break;
 		}
 
 		
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -101,7 +121,7 @@ public class WorktimeServlet extends HttpServlet{
 		String empno = loginInfo.get("empno");
 		String name = loginInfo.get("name");
 		List<String> weekLastDays = new ArrayList<String>();
-		List<Worktime> worktimeList = worktimeService.getWorktimeInfo(empno);
+		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno);
 		//檢查本月是否已建立工時表
 		if(worktimeService.checkCurrentMonth(empno)) {
 			worktimeService.insertWorktime(empno);
@@ -134,7 +154,7 @@ public class WorktimeServlet extends HttpServlet{
 		if(searchMonth == null) {
 			return;
 		}
-		List<Worktime> worktimeList = worktimeService.getWorktime(empno,searchMonth);
+		List<SubmissionHistory> worktimeList = worktimeService.getWorktime(empno,searchMonth);
 		if(worktimeList.size() == 0) {
 			return;
 		}
@@ -163,7 +183,7 @@ public class WorktimeServlet extends HttpServlet{
 		String inputSearch = request.getParameter("inputSearch");
 		System.out.println(inputMonth);
 		System.out.println(inputSearch);
-		List<Worktime> worktimeList = new ArrayList<>();
+		List<SubmissionHistory> worktimeList = new ArrayList<>();
 		
 	
 		//只輸入姓名或員編
@@ -204,11 +224,31 @@ public class WorktimeServlet extends HttpServlet{
 	}
 
 
-	private void doGetUrgeList(HttpServletRequest request) {
+	private void doGetNoSubmitWorktime(HttpServletRequest request) {
 		// TODO Auto-generated method stub
-		List<Worktime> worktimeList = worktimeService.
-		
+		List<NoSubmitWorktime> noSubmotWorktimeList = worktimeService.getNoSubmitWorktime();
+		request.setAttribute("noSubmotWorktimeList", noSubmotWorktimeList);
+	}
+	
+	private void doUrgeWorktime(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		//取得最新的催繳日期
+		List<NoSubmitWorktime> noSubmotWorktimeList = worktimeService.getNewstUrgeDate();
+		worktimeService.urgeEmployee(noSubmotWorktimeList);
 	}
 
 
+	private void checkPass(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		String submssionId = request.getParameter("submssionId");
+		worktimeService.checkPass(submssionId);
+	}
+
+	private void checkNoPass(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		String submssionId = request.getParameter("submssionId");
+		String noPassReason = request.getParameter("noPassReason");
+		System.out.println(noPassReason);
+		worktimeService.checkNoPass(submssionId,noPassReason);
+	}
 }

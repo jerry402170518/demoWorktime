@@ -87,33 +87,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>07/01~07/07</td>
-                    <td>A00001</td>
-                    <td>Otto</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>07/08~07/15</td>
-                    <td>B00002</td>
-                    <td>tdornton</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>07/15~07/22</td>
-                    <td>C00003</td>
-                    <td>the Bird</td>
-                    <td>3 </td>
-                </tr>
+                <c:forEach var="noSubmotWorktimeList" items="${requestScope.noSubmotWorktimeList}" varStatus="loop">
+                	<tr>
+                		<td><c:out value="${noSubmotWorktimeList.weekFirstdate}"/></td>
+                		<td><c:out value="${noSubmotWorktimeList.empno}"/></td>
+                		<td><c:out value="${noSubmotWorktimeList.name}"/></td>
+                		<td><c:out value="${noSubmotWorktimeList.urgeTimes}"/></td>
+                	</tr>
+                </c:forEach>
                 <tr>
                     <td colspan="4">
-                        <button type="button" class="btn btn-warning callWorktime font-weight-bold">催繳</button>
+                        <a href="Worktime?action=urgeWorktime" class="btn btn-warning callWorktime font-weight-bold">催繳</a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <footer class="bg-secondary text-white text-center py-2 my-4">
+    <footer class="bg-secondary text-white text-center fixed-bottom">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
     <!-- personal Modal-->
@@ -202,15 +192,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script>
-        $('.toggle-button').click(function () {
-            var checkBoxes = $('input[type="checkbox"]');
-            checkBoxes.prop('checked',!checkBoxes.prop('checked'))
-        })
-        $('.callWorktime').click(function(){
-            swal("催繳成功!", " ", "success");
-        })
-    </script>
 </body>
 
 </html>

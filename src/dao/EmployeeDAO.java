@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.Employee;
-import model.Worktime;
+import model.SubmissionHistory;
 
 public interface EmployeeDAO {
 	boolean checkAccount(Employee employee);

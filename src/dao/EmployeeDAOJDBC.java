@@ -8,7 +8,7 @@ import java.util.Map;
 
 import oracle.sql.*;
 import model.Employee;
-import model.Worktime;
+import model.SubmissionHistory;
 
 public class EmployeeDAOJDBC implements EmployeeDAO{
 	Connection conn = null;

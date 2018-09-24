@@ -11,7 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import model.Worktime;
+import model.NoSubmitWorktime;
+import model.SubmissionHistory;
 import model.WorktimeDetail;
 
 public class WorktimeDAOJDBC implements WorktimeDAO{
@@ -52,9 +53,9 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 	
 	@Override
-	public List<Worktime> getWorktime(String empno) {
+	public List<SubmissionHistory> getWorktime(String empno) {
 		// TODO Auto-generated method stub
-		List<Worktime> worktimeList = new ArrayList<Worktime>();
+		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
 		
 		Calendar c = Calendar.getInstance();   // this takes current date
 	    c.set(Calendar.DAY_OF_MONTH, 1);
@@ -90,14 +91,14 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		return worktimeList;
 	}
 
-	private Worktime createWorktime(ResultSet rs) {
+	private SubmissionHistory createWorktime(ResultSet rs) {
 		// TODO Auto-generated method stub
-		Worktime worktime = new Worktime();
+		SubmissionHistory worktime = new SubmissionHistory();
 		try {
 			worktime.setEmpNo(rs.getString("EMPNO"));
 			worktime.setWeekFirstDay(rs.getDate("WEEK_FIRST_DAY"));
 			worktime.setStatus(rs.getString("STATUS"));
-			
+			worktime.setId(rs.getInt("id"));
 			return worktime;
 		} catch (SQLException e) {
 			// TODO 自動產生的 catch 區塊
@@ -148,7 +149,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public List<Integer> getHours(List<Worktime> worktimeList) {
+	public List<Integer> getHours(List<SubmissionHistory> worktimeList) {
 		// TODO Auto-generated method stub
 		List<Integer> hours = new ArrayList<>();
 		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
@@ -196,9 +197,9 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public List<Worktime> getWorktime(String empno, String searchMonth) {
+	public List<SubmissionHistory> getWorktime(String empno, String searchMonth) {
 		// TODO Auto-generated method stub
-		List<Worktime> worktimeList = new ArrayList<Worktime>();
+		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
 	    
 		try {
 			
@@ -268,9 +269,9 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public List<Worktime> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth) {
+	public List<SubmissionHistory> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth) {
 		// TODO Auto-generated method stub
-		List<Worktime> worktimeList = new ArrayList<Worktime>();
+		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
 		
 		
 		try {
@@ -305,6 +306,159 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			close();
 		}
 		return worktimeList;	
+	}
+
+	@Override
+	public List<NoSubmitWorktime> getNoSubmitWorktime() {
+		// TODO Auto-generated method stub
+		List<NoSubmitWorktime> noSubmitWorktimeList = new ArrayList<NoSubmitWorktime>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+    	Calendar c = Calendar.getInstance();
+    	c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+    	String deadline = sdf.format(c.getTime());
+    	System.out.println(deadline);
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT submission_history.id, employee.name, submission_history.empno, submission_history.week_first_day, count(urge_history.id) urge_times ");
+			sql.append("FROM submission_history ");
+			sql.append("left join employee on submission_history.empno = employee.empno ");
+			sql.append("left join urge_history on submission_history.id = urge_history.submission_id ");
+			sql.append("where submission_history.status = '未繳交' ");
+			sql.append("and submission_history.week_first_day < TO_DATE(? ,'YYYY-MM-DD') ");
+			sql.append("group by submission_history.id, submission_history.status, submission_history.empno, employee.name, submission_history.week_first_day ");
+			sql.append("order by submission_history.week_first_day");
+			
+			System.out.println("SUCCESS");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,deadline);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				NoSubmitWorktime noSubmitWorktime = new NoSubmitWorktime();
+				noSubmitWorktime.setWeekFirstdate(rs.getDate("WEEK_FIRST_DAY"));
+				noSubmitWorktime.setEmpno(rs.getString("EMPNO"));
+				noSubmitWorktime.setName(rs.getString("NAME"));
+				noSubmitWorktime.setUrgeTimes(rs.getInt("URGE_TIMES"));
+				System.out.println(rs.getInt("URGE_TIMES"));
+				System.out.println("C");
+				noSubmitWorktimeList.add(noSubmitWorktime);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return noSubmitWorktimeList;	
+	}
+
+	@Override
+	public List<NoSubmitWorktime> getNewstUrgeDate() {
+		// TODO Auto-generated method stub
+		List<NoSubmitWorktime> noSubmitWorktimeList = new ArrayList<NoSubmitWorktime>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+    	Calendar c = Calendar.getInstance();
+    	c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+    	String deadline = sdf.format(c.getTime());
+    	System.out.println(deadline);
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT submission_history.id, employee.name, submission_history.empno, submission_history.week_first_day, max(urge_history.urge_date) news_urge_date ");
+			sql.append("FROM submission_history ");
+			sql.append("left join employee on submission_history.empno = employee.empno ");
+			sql.append("left join urge_history on submission_history.id = urge_history.submission_id ");
+			sql.append("where submission_history.status = '未繳交'  ");
+			sql.append("and submission_history.week_first_day < TO_DATE(?,'YYYY-MM-DD') ");
+			sql.append("group by submission_history.id, submission_history.status, submission_history.empno, employee.name, submission_history.week_first_day ");
+			sql.append("order by submission_history.week_first_day");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,deadline);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				NoSubmitWorktime noSubmitWorktime = new NoSubmitWorktime();
+				noSubmitWorktime.setWeekFirstdate(rs.getDate("WEEK_FIRST_DAY"));
+				noSubmitWorktime.setEmpno(rs.getString("EMPNO"));
+				noSubmitWorktime.setName(rs.getString("NAME"));
+				noSubmitWorktime.setUrgeDate(rs.getDate("news_urge_date"));
+				noSubmitWorktime.setId(rs.getInt("ID"));
+				noSubmitWorktimeList.add(noSubmitWorktime);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return noSubmitWorktimeList;
+	}
+
+	@Override
+	public void urgeEmployee(List<NoSubmitWorktime> noSubmotWorktimeList) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("insert into urge_history(urge_date, submission_id ) ");
+			sql.append("values(sysdate,?)");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			System.out.println("noSubmitWorktimeList size:"+ noSubmotWorktimeList.size());
+			for(int i = 0;i<noSubmotWorktimeList.size();i++) {
+				pstmt.setInt(1, noSubmotWorktimeList.get(i).getId());
+				pstmt.executeUpdate();
+				System.out.println("WHAT");
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
+	@Override
+	public void checkPass(String submssionId) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE SUBMISSION_HISTORY ");
+			sql.append("SET STATUS = '已通過' ");
+			sql.append("WHERE ID = ? ");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setString(1, submssionId);
+			pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
+	@Override
+	public void checNokPass(String submssionId, String noPassReason) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE SUBMISSION_HISTORY ");
+			sql.append("SET STATUS = '未通過'  , NOTE = ? ");
+			sql.append("WHERE ID = ? ");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setString(1, noPassReason);
+			pstmt.setString(2, submssionId);
+			pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
 	}
 
 }

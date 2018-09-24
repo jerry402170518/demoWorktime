@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Employee;
-import model.Worktime;
+import model.SubmissionHistory;
 import service.EmployeeService;
 
 public class EmployeeServlet extends HttpServlet{

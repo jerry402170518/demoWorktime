@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Worktime;
+import model.SubmissionHistory;
 import model.WorktimeDetail;
 
 public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{

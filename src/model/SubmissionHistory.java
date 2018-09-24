@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-public class Worktime {
+public class SubmissionHistory {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -17,6 +17,8 @@ public class Worktime {
 	private String status;
 	
 	private String name;
+	
+	private int id;
 
 
 	public String getName() {
@@ -27,7 +29,7 @@ public class Worktime {
 		this.name = name;
 	}
 
-	public Worktime() {
+	public SubmissionHistory() {
 	}
 
 	public String getEmpNo() {
@@ -61,6 +63,20 @@ public class Worktime {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	

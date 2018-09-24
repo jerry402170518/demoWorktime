@@ -157,11 +157,12 @@
 						                    <iframe src="WorktimeDetail?action=mgrGetWorktimeDetail&weekFirstDay=${worktime.weekFirstDay}" frameborder="0" height="400px" width="1150px"></iframe>
 						                </div>
 						                <div class="modal-footer">
-						                	<form action="">
-							                	<textarea name="" id="" cols="40" rows="3" placeholder="未通過請填寫原因，再點選未通過"></textarea>
-							                    <button type="button" class="btn btn-danger mr-auto">未通過</button>
+						                	<form method="post">
+						                		<input type="hidden" name="submssionId" value="${worktime.id}">
+							                	<textarea name="noPassReason" id="" cols="40" rows="3" placeholder="未通過請填寫原因，再點選未通過" required></textarea>
+							                    <button type="submit" formaction="Worktime?action=worktimeCheckNoPass" class="btn btn-danger mr-auto">未通過</button>
 							                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-							                    <button type="button" class="btn btn-primary">通過</button>
+							                    <button type="submit" formaction="Worktime?action=worktimeCheckPass" class="btn btn-primary">通過</button>
 						                	</form>
 						                    
 						                </div>
@@ -268,15 +269,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
 
-    <script>
-        $('.toggle-button').click(function () {
-            var checkBoxes = $('input[type="checkbox"]');
-            checkBoxes.prop('checked', !checkBoxes.prop('checked'))
-        })
-        $('.callWorktime').click(function () {
-            swal("催繳成功!", " ", "success");
-        })
-    </script>
 </body>
 
 </html>
