@@ -75,6 +75,31 @@ public class WorktimeService {
 			}
 		}
 		
+		for(int i = 0;i < noSubmotWorktimeList.size(); i++) {
+			EmailService emailService = new EmailService();
+			StringBuilder html = new StringBuilder();
+			html.append("<style>.border{border:1px solid gray;height: 1px;}</style>");
+			html.append("<center><h1>工時系統-工時尚未繳交</h1>");
+			html.append("<div class='border'></div>");
+			html.append("<p>您的工時尚未繳交，請盡速填寫並繳交</p>");
+			html.append("<p>員工:" + noSubmotWorktimeList.get(i).getName() + "</p>");
+			html.append("<p>員編:" + noSubmotWorktimeList.get(i).getEmpno()+ "</p>");
+			html.append("<p>周別起始日:" + noSubmotWorktimeList.get(i).getWeekFirstdate()+"</p></center>");
+			
+			String email = noSubmotWorktimeList.get(i).getEmail();
+			String title = "工時尚未繳交";
+			try {
+				emailService.sendHtmlMail(email, title, html.toString());
+			} catch (AddressException e) {
+				// TODO 自動產生的 catch 區塊
+				System.out.println("email地址錯誤: " + e.getMessage());
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO 自動產生的 catch 區塊
+				System.out.println("email寄送錯誤: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	
 		
 		wDao.urgeEmployee(noSubmotWorktimeList);

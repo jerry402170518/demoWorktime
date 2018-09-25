@@ -16,6 +16,8 @@ public class NoSubmitWorktime {
 	
 	private Date urgeDate;
 	
+	private String email;
+	
 	private int id;
 
 	public Date getWeekFirstdate() {
@@ -64,6 +66,20 @@ public class NoSubmitWorktime {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

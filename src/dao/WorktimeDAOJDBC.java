@@ -364,13 +364,13 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
     	System.out.println(deadline);
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT submission_history.id, employee.name, submission_history.empno, submission_history.week_first_day, max(urge_history.urge_date) news_urge_date ");
+			sql.append("SELECT submission_history.id, employee.name, submission_history.empno, submission_history.week_first_day, max(urge_history.urge_date) news_urge_date,employee.email ");
 			sql.append("FROM submission_history ");
 			sql.append("left join employee on submission_history.empno = employee.empno ");
 			sql.append("left join urge_history on submission_history.id = urge_history.submission_id ");
 			sql.append("where submission_history.status = '未繳交'  ");
 			sql.append("and submission_history.week_first_day < TO_DATE(?,'YYYY-MM-DD') ");
-			sql.append("group by submission_history.id, submission_history.status, submission_history.empno, employee.name, submission_history.week_first_day ");
+			sql.append("group by submission_history.id, submission_history.status, submission_history.empno, employee.name, submission_history.week_first_day,employee.email ");
 			sql.append("order by submission_history.week_first_day");
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
@@ -383,6 +383,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 				noSubmitWorktime.setName(rs.getString("NAME"));
 				noSubmitWorktime.setUrgeDate(rs.getDate("news_urge_date"));
 				noSubmitWorktime.setId(rs.getInt("ID"));
+				noSubmitWorktime.setEmail(rs.getString("EMAIL"));
 				noSubmitWorktimeList.add(noSubmitWorktime);
 			}
 		}catch(SQLException e){
