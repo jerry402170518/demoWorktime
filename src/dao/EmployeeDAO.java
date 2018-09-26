@@ -17,4 +17,6 @@ public interface EmployeeDAO {
 
 	List<Employee> getEmpInfoByEmpno(String inputSearch);
 
+	void modifyEmp(String name, String email, String position, String idNumber, String empno);
+
 }

@@ -38,7 +38,7 @@
                     <a class="nav-link" href="egrAddEmp.html">新增員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="egrModifyEmp.html">修改員工資料</a>
+                    <a class="nav-link" href="Employee?action=modifyEmployee_page">修改員工資料</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="egrHoliday.html">假日維護</a>

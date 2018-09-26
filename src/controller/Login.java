@@ -18,7 +18,7 @@ public class Login extends HttpServlet{
 
 	private static final String EMPLOYEE_PAGE = "empMain.jsp";
 	private static final String MANAGER_PAGE = "mgrMain.jsp";
-	private static final String ENGINEER_PAGE = "egrMain.jsp";
+	private static final String ENGINEER_PAGE = "adminMain.jsp";
 	private static final String ERROR_PAGE = "login.jsp";
 	
 	private EmployeeService empService = new EmployeeService();

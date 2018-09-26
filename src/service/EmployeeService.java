@@ -49,4 +49,8 @@ public class EmployeeService {
 		// TODO Auto-generated method stub
 		return empDAO.getEmpInfoByEmpno(inputSearch);
 	}
+	public void modifyEmp(String name, String email, String position, String idNumber, String empno) {
+		// TODO Auto-generated method stub
+		empDAO.modifyEmp(name, email, position, idNumber, empno);
+	}
 }

@@ -19,7 +19,7 @@ public class EmployeeServlet extends HttpServlet{
 	private EmployeeService employeeService = new EmployeeService();
 
 	private static final String SEARCHEMPINFO_PAGE = "/WEB-INF/view/manager/mgrSearchEmpInfo.jsp";
-	
+	private static final String MODIFY_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminModifyEmp.jsp";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
@@ -37,6 +37,21 @@ public class EmployeeServlet extends HttpServlet{
 				doGetEmpInfo(request);
 				request.getRequestDispatcher(SEARCHEMPINFO_PAGE).forward(request, response);
 				break;
+			//轉交至修改員工頁面
+			case "modifyEmployee_page":
+				request.getRequestDispatcher(MODIFY_EMPLOYEE_PAGE).forward(request, response);
+				break;
+			//搜尋欲修改之員工
+			case "searchModifyEmp":
+				doGetEmpInfo(request);
+				request.getRequestDispatcher(MODIFY_EMPLOYEE_PAGE).forward(request, response);
+				break;
+			//修改員工資料
+			case "modifyEmployee":
+				modifyEmp(request);
+				request.getRequestDispatcher(MODIFY_EMPLOYEE_PAGE).forward(request, response);
+				break;
+				
 		}
 	}
 
@@ -66,4 +81,18 @@ public class EmployeeServlet extends HttpServlet{
 		System.out.println("B");
 		request.setAttribute("employeeList", employeeList);
 	}
+	
+
+
+	private void modifyEmp(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		String empno = request.getParameter("empno");
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String position = request.getParameter("position");
+		String idNumber = request.getParameter("idNumber");
+		
+		employeeService.modifyEmp(name, email, position, idNumber, empno);
+	}
+
 }

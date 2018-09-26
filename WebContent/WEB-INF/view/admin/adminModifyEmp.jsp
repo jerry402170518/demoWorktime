@@ -17,12 +17,16 @@
         html {
             font-size: 20px;
         }
+
+        .modal-lg {
+            max-width: 50% !important;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
-        <a class="navbar-brand" href="mgrMain.html">工時系統</a>
+        <a class="navbar-brand" href="egrMain.html">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,21 +34,18 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="mgrMain.html">首頁
+                    <a class="nav-link" href="egrMain.html">首頁
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCheckWorktime.html">審核工時</a>
+                    <a class="nav-link" href="egrAddEmp.html">新增員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCallWorktime.html">催繳工時</a>
+                    <a class="nav-link" href="#">修改員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrSearchWorktime.html">查詢員工工時</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">查詢員工資料</a>
+                    <a class="nav-link" href="egrHoliday.html">假日維護</a>
                 </li>
             </ul>
             <div class="btn-group mr-2">
@@ -68,14 +69,13 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
-
     <div class="container-fluid mt-4">
         <div class="card rounded-0">
             <div class="card-header text-center font-weight-bold h4 bg-secondary text-light">
-                查詢員工資料
+                修改員工資料
             </div>
             <div class="card-body">
-                <form action="Employee?action=searchEmpInfo_page" method="post" class="form-inline row justify-content-center">
+               <form action="Employee?action=searchModifyEmp" method="post" class="form-inline row justify-content-center">
                     <div class="form-group pr-0">
                         <label for="exampleFormControlSelect1">依照</label>
                         <select name="nameOrEmpno" class="form-control ml-2" id="exampleFormControlSelect1">
@@ -100,66 +100,124 @@
                                 <th>職位</th>
                                 <th>身分證</th>
                                 <th>電子信箱</th>
+                                <th>修改</th>
                             </tr>
                         </thead>
+                        <c:forEach var="employee" items="${requestScope.employeeList}" varStatus="loop">
                         <tbody>
-                        	<c:forEach var="employee" items="${requestScope.employeeList}" varStatus="loop">
-                        		<tr>
-                        			<td><c:out value="${employee.empno}"/></td>
-                        			<td><c:out value="${employee.name}"/></td>
-                        			<td><c:out value="${employee.position}"/></td>
-                        			<td><c:out value="${employee.idNumber}"/></td>
-                        			<td><c:out value="${employee.email}"/></td>
-                        		</tr>
-                        	</c:forEach>
+                            <tr>
+                                <td><c:out value="${employee.empno}"/></td>
+                                <td><c:out value="${employee.name}"/></td>
+                        		<td><c:out value="${employee.position}"/></td>
+                        		<td><c:out value="${employee.idNumber}"/></td>
+                        		<td><c:out value="${employee.email}"/></td>
+                                <td>
+                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modifyModal">修改</button>
+                                    <!-- modify Modal -->
+                                    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-info text-light">
+                                                    <h5 class="modal-title font-weight-bold" id="modifyModalLabel">
+                                                        <i class="fas fa-edit mr-2"></i>修改資料</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <form action="Employee?action=modifyEmployee" method="post">
+                                                	<table class="table text-center">
+                                                        <tr>
+                                                            <td>員工編號</td>
+                                                            <td><c:out value="${employee.empno}"/></td>
+                                                            <input type="hidden" name="empno" value="${employee.empno}" style="text-align:center">
+                                                        </tr>
+                                                        <tr>
+                                                            <td>姓名</td>
+                                                            <td>
+                                                                <input type="text" name="name" value="${employee.name}" style="text-align:center">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>email</td>
+                                                            <td>
+                                                                <input type="email" name="email" value="${employee.email}" style="text-align:center" size="30">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>職位</td>
+                                                            <td>
+                                                                <input type="text" name="position" value="${employee.position}" style="text-align:center">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>身分證字號</td>
+                                                            <td>
+                                                                <input type="text" name="idNumber" value="${employee.idNumber}"1` style="text-align:center">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                                    <button type="submit" class="btn btn-primary">確定修改</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
+                        </c:forEach>
                     </table>
                 </div>
             </div>
         </div>
 
-
         <footer class="bg-secondary text-white text-center fixed-bottom">
             工時系統 Copyright © 2018 YanRu Lin All rights reserved
         </footer>
-
-        <!-- personal Modal-->
-        <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-light">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            <i class="fas fa-info mr-3"></i>個人資料</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body px-0 py-0">
-                        <table class="table text-center">
-                            <tr>
-                                <td>員工編號</td>
-                                <td> 00000000</td>
-                            </tr>
-                            <tr>
-                                <td>姓名</td>
-                                <td> 林彥儒</td>
-                            </tr>
-                            <tr>
-                                <td>email</td>
-                                <td>yanru4021470518@gamil.com</td>
-                            </tr>
-                            <tr>
-                                <td>職位</td>
-                                <td>員工</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">關閉</button>
-                    </div>
+       
+    <!-- personal Modal-->
+    <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-light">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="fas fa-info mr-3"></i>個人資料</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body px-0 py-0">
+                    <table class="table text-center">
+                        <tr>
+                            <td>員工編號</td>
+                            <td> 00000000</td>
+                        </tr>
+                        <tr>
+                            <td>姓名</td>
+                            <td> 林彥儒</td>
+                        </tr>
+                        <tr>
+                            <td>email</td>
+                            <td>yanru4021470518@gamil.com</td>
+                        </tr>
+                        <tr>
+                            <td>職位</td>
+                            <td>員工</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">關閉</button>
                 </div>
             </div>
         </div>
+    </div>
 
         <!-- changePwd Modal -->
         <div class="modal fade" id="changePwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

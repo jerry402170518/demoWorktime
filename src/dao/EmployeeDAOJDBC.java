@@ -183,5 +183,31 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 		}
 	}
 
+	@Override
+	public void modifyEmp(String name, String email, String position, String idNumber,String empno) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("update employee ");
+			sql.append("set name = ? , position = ? , email = ? , id_number = ? ");
+			sql.append("where empno = ? ");
+			
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, name);
+			pstmt.setString(2, position);
+			pstmt.setString(3, email);
+			pstmt.setString(4, idNumber);
+			pstmt.setString(5, empno);
+			
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
 	
 }
