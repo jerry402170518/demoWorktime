@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-9"></div>
                         <div class="col-3">
-                            <a href="#">忘記密碼</a>
+                            <a href="ForgetPassword?action=forgetPassword_page">忘記密碼</a>
                             <a href="StartEmployee?action=startAccount_page">啟動帳號</a></div>
                         <div class="col-1"></div>
                     </div>

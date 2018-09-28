@@ -125,6 +125,46 @@ public class EmployeeService {
 		}
 	}
 	
+
+	public void getVerificationByForgetPassword(String empno, String idNumber, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		request.getSession().setMaxInactiveInterval(600);
+		String md5String =  empno + idNumber ;
+    	String verificationCode = md5(md5String);
+    	request.getSession().setAttribute("verificationCode", verificationCode);
+    	
+    	System.out.println(verificationCode);
+    	EmailService emailService = new EmailService();
+		StringBuilder html = new StringBuilder();
+		html.append("<style>.border{border:1px solid gray;height: 1px;}</style>");
+		html.append("<center><h1>工時系統-忘記密碼</h1>");
+		html.append("<div class='border'></div>");
+		html.append("<p>以下寄送的驗證碼有時效性，請在取得驗證碼後十分鐘內盡速更改密碼。</p>");
+		html.append("<p>驗證碼:" + verificationCode + "</p>");
+		
+		Map<String, String> EmployeeInfo = empDAO.getLoginInfo(empno);
+		
+		String email = EmployeeInfo.get("email");
+		System.out.println(email);
+		String title = "取得啟動帳號之驗證碼";
+		try {
+			emailService.sendHtmlMail(email, title, html.toString());
+		} catch (AddressException e) {
+			// TODO 自動產生的 catch 區塊
+			System.out.println("email地址錯誤: " + e.getMessage());
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO 自動產生的 catch 區塊
+			System.out.println("email寄送錯誤: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public void insertPassword(String empno, String password) {
+		// TODO Auto-generated method stub
+		empDAO.insertPassword(empno, password);
+	}
+	
 	//傳入字串並回傳一組亂碼
 	public static String md5(String s) 
 	    {
@@ -149,10 +189,6 @@ public class EmployeeService {
 	        }
 	        return "";
 	    }
-	public void insertPassword(String empno, String password) {
-		// TODO Auto-generated method stub
-		empDAO.insertPassword(empno, password);
-	}
 	
 	
 	
