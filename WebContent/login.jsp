@@ -46,13 +46,15 @@
                         </div>
                     </div>
                     <div class="row mt-5 pb-3">
-                        <div class="col-3"></div>
+                        <div class="col-5"></div>
                         <div class="col-4">
-                                <button type="submit" class="btn btn-success btn-login font-weight-bold ">登入帳號</button>
+                                <button type="submit" class="btn btn-success btn-login font-weight-bold">登入帳號</button>
                         </div>
+                        <div class="col-9"></div>
                         <div class="col-3">
-                                <button type="button" class="btn btn-danger btn-login font-weight-bold mr-5">忘記密碼</button>
-                        </div>
+                            <a href="#">忘記密碼</a>
+                            <a href="StartEmployee?action=startAccount_page">啟動帳號</a></div>
+                        <div class="col-1"></div>
                     </div>
                     <div class="row">
                         <div class="col-12 mb-5 pb-3 text-center errorMsg">

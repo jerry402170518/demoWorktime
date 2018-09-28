@@ -12,8 +12,10 @@ public class Employee implements Serializable {
 	private Date begin;
 
 	private String email;
+	
+	private Date accountBegin;
 
-	private Date end;
+	private Date accountEnd;
 
 	private String name;
 
@@ -51,14 +53,6 @@ public class Employee implements Serializable {
 		this.email = email;
 	}
 
-	public Date getEnd() {
-		return this.end;
-	}
-
-	public void setEnd(Date end) {
-		this.end = end;
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -89,6 +83,34 @@ public class Employee implements Serializable {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	/**
+	 * @return the accountBegin
+	 */
+	public Date getAccountBegin() {
+		return accountBegin;
+	}
+
+	/**
+	 * @param accountBegin the accountBegin to set
+	 */
+	public void setAccountBegin(Date accountBegin) {
+		this.accountBegin = accountBegin;
+	}
+
+	/**
+	 * @return the accountEnd
+	 */
+	public Date getAccountEnd() {
+		return accountEnd;
+	}
+
+	/**
+	 * @param accountEnd the accountEnd to set
+	 */
+	public void setAccountEnd(Date accountEnd) {
+		this.accountEnd = accountEnd;
 	}
 
 	

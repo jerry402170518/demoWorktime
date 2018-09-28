@@ -56,9 +56,10 @@ public class Login extends HttpServlet{
 		/*if(帳號與密碼皆正確){
 		 * 	if(是否已離職){errorMsg:已離職:}
 		 * 	else{ 判斷身分:顯示應當畫面}
+		}else if(帳號是否未啟動){
+			{errorMsg:帳號未啟動，請至信箱啟動帳號:}
 		}else{
-			errorMsg:輸入帳號或密碼錯誤
-		}
+			{errorMsg:輸入帳號或密碼錯誤}
 		*/
 		if(empService.checkAccount(employee)) {
 			Map<String, String> login=empService.getLoginInfo(employee.getEmpno());
@@ -80,7 +81,10 @@ public class Login extends HttpServlet{
 				errorMsg.add("您已離職!帳號已無法使用!");
 				request.setAttribute("errorMsg", errorMsg);
 			}
-		}else{
+		}else if(empService.startedOrNot(employee.getEmpno())){
+			errorMsg.add("帳號未啟動，請至信箱啟動帳號!");
+			request.setAttribute("errorMsg", errorMsg);
+		}else {
 			errorMsg.add("帳號或密碼輸入錯誤!");
 			request.setAttribute("errorMsg", errorMsg);
 		}

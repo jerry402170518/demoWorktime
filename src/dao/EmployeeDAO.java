@@ -19,4 +19,14 @@ public interface EmployeeDAO {
 
 	void modifyEmp(String name, String email, String position, String idNumber, String empno);
 
+	Boolean checkEmpExist(String empno);
+
+	void addEmp(String name, String email, String position, String idNumber, String empno);
+
+	boolean startedOrNot(String empno);
+
+	void insertPassword(String empno, String password);
+
+	
+
 }

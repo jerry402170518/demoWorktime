@@ -20,6 +20,9 @@ public class EmployeeServlet extends HttpServlet{
 
 	private static final String SEARCHEMPINFO_PAGE = "/WEB-INF/view/manager/mgrSearchEmpInfo.jsp";
 	private static final String MODIFY_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminModifyEmp.jsp";
+	private static final String ADD_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminAddEmp.jsp";
+
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
@@ -51,10 +54,18 @@ public class EmployeeServlet extends HttpServlet{
 				modifyEmp(request);
 				request.getRequestDispatcher(MODIFY_EMPLOYEE_PAGE).forward(request, response);
 				break;
-				
+			//轉交至增加員工頁面
+			case "addEmployee_page":
+				request.getRequestDispatcher(ADD_EMPLOYEE_PAGE).forward(request, response);
+				break;
+			//新增員工:
+			case "addEmployee":
+				addEmployee(request);
+				request.getRequestDispatcher(ADD_EMPLOYEE_PAGE).forward(request, response);
+				break;
+			
 		}
 	}
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -81,8 +92,6 @@ public class EmployeeServlet extends HttpServlet{
 		System.out.println("B");
 		request.setAttribute("employeeList", employeeList);
 	}
-	
-
 
 	private void modifyEmp(HttpServletRequest request) {
 		// TODO Auto-generated method stub
@@ -94,5 +103,18 @@ public class EmployeeServlet extends HttpServlet{
 		
 		employeeService.modifyEmp(name, email, position, idNumber, empno);
 	}
+
+	private void addEmployee(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String position = request.getParameter("position");
+		String idNumber = request.getParameter("idNumber");
+		System.out.println(email);
+		employeeService.addEmp(name, email, position, idNumber);
+	}
+	
+
 
 }

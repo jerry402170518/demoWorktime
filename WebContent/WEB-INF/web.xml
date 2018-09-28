@@ -60,4 +60,12 @@
     <servlet-name>WorktimeDetail</servlet-name>
     <url-pattern>/WorktimeDetail</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>StartEmployee</servlet-name>
+    <servlet-class>controller.StartEmployeeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StartEmployee</servlet-name>
+    <url-pattern>/StartEmployee</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -35,10 +35,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Employee?action=addEmployee_page">新增員工資料</a>
+                    <a class="nav-link" href="#">新增員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Employee?action=modifyEmployee_page">修改員工資料</a>
+                    <a class="nav-link" href="egrModifyEmp.html">修改員工資料</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="egrHoliday.html">假日維護</a>
@@ -65,31 +65,61 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
-    <div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col-3 pr-0">
-                <a href="egrAddEmp.html" class="badge badge-success rounded-0 btn-block">
-                    <i class="fas fa-user-plus fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">新增員工</div>
-                </a>
+    <div class="container mt-4 px-5">
+        <div class="card rounded-0">
+            <div class="card-header text-center font-weight-bold h4 bg-success text-light">
+                新增員工
             </div>
-            <div class="col-3 pl-0">
-                <a href="egrModifyEmp.html" class="badge badge-warning rounded-0 btn-block">
-                    <i class="fas fa-user-edit fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">修改員工</div>
-                </a>
+            <div class="card-body">
+                <form action="Employee?action=addEmployee" method="post">
+                    <div class="row justify-content-center mt-4">
+                        <table class="table text-center table-hover" style="width:  75%">
+                            <tr>
+                                <td>員工編號</td>
+                                <td style="width:  50.33%">自動產生</td>
+                            </tr>
+                            <tr>
+                                <td>職位</td>
+                                <td class="row justify-content-center">
+                                    <select name="position" class="form-control col-3">
+                                        <option>員工</option>
+                                        <option>主管</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>姓名</td>
+                                <td>
+                                    <input type="text" name="name" style="text-align:center" size="30">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>身分證字號</td>
+                                <td>
+                                    <input type="text" name="idNumber" style="text-align:center" size="30">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>email</td>
+                                <td>
+                                    <input type="email" name="email" style="text-align:center" size="30">
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td colspan="2"><input type="submit" class="btn btn-info" value="確定新增"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
             </div>
-            <div class="col-6">
-                <a href="egrHoliday.html" class="badge badge-primary rounded-0 btn-block">
-                    <i class="fas fa-calendar-alt fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">假日維護</div>
-                </a>
-            </div>
+
         </div>
     </div>
-    <footer class="bg-secondary text-white text-center py-2 fixed-bottom">
+
+    <footer class="bg-secondary text-white text-center py-2 my-4">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
+
     <!-- personal Modal-->
     <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

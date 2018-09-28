@@ -57,6 +57,9 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
+				if(rs.getString("password") == null) {
+					return false;
+				}
 				if(rs.getString("empno").equals(employee.getEmpno()) && 
 				   rs.getString("password").equals(employee.getPassword())){
 					return true;
@@ -89,8 +92,8 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 				empInfo.put("position", rs.getString("POSITION"));
 				empInfo.put("email", rs.getString("EMAIL"));
 				empInfo.put("password", rs.getString("password"));
-				if(rs.getString("end") != null) {
-					empInfo.put("end", rs.getString("end"));
+				if(rs.getString("account_end") != null) {
+					empInfo.put("accountEnd", rs.getString("account_end"));
 				}
 				return empInfo;
 			}
@@ -101,6 +104,36 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			close();
 		}
 		return null;
+	}
+	
+
+
+	@Override
+	public boolean startedOrNot(String empno) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) ");
+			sql.append("from employee ");
+			sql.append("where empno= ? ");
+			sql.append("and password is null ");
+			
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getInt(1) == 1) {
+					return true;
+				}
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return false;
 	}
 
 	@Override
@@ -200,6 +233,80 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			pstmt.setString(3, email);
 			pstmt.setString(4, idNumber);
 			pstmt.setString(5, empno);
+			
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
+	@Override
+	public Boolean checkEmpExist(String empno) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(empno) ");
+			sql.append("from employee ");
+			sql.append("where empno= ? ");
+			
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getInt(1) == 0) {
+					return false;
+				}
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return true;
+	}
+
+	@Override
+	public void addEmp(String name, String email, String position, String idNumber, String empno) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("insert into employee(empno, name, position, id_number, email) ");
+			sql.append("values (? , ? , ? , ? , ?)");
+			System.out.println(email);
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, empno);
+			pstmt.setString(2, name);
+			pstmt.setString(3, position);
+			pstmt.setString(4, idNumber);
+			pstmt.setString(5, email);
+			
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
+	@Override
+	public void insertPassword(String empno, String password) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("update employee ");
+			sql.append("set password = ? ");
+			sql.append("where empno = ? ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, password);
+			pstmt.setString(2, empno);
 			
 			pstmt.executeUpdate();
 		}catch(SQLException e) {
