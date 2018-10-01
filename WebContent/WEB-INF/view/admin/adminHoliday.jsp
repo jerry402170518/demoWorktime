@@ -35,13 +35,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Employee?action=addEmployee_page">新增員工資料</a>
+                    <a class="nav-link" href="egrAddEmp.html">新增員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Employee?action=modifyEmployee_page">修改員工資料</a>
+                    <a class="nav-link" href="egrModifyEmp.html">修改員工資料</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Holiday?action=modifyHoliday_page">假日維護</a>
+                    <a class="nav-link" href="#">假日維護</a>
                 </li>
             </ul>
             <div class="btn-group mr-2">
@@ -61,30 +61,13 @@
                     </button>
                 </div>
             </div>
-            <a href="login.html" class="btn btn-warning navBtn font-weight-bold mr-3">
+            <a href="#" class="btn btn-warning navBtn font-weight-bold mr-3">
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
-    <div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col-3 pr-0">
-                <a href="egrAddEmp.html" class="badge badge-success rounded-0 btn-block">
-                    <i class="fas fa-user-plus fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">新增員工</div>
-                </a>
-            </div>
-            <div class="col-3 pl-0">
-                <a href="egrModifyEmp.html" class="badge badge-warning rounded-0 btn-block">
-                    <i class="fas fa-user-edit fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">修改員工</div>
-                </a>
-            </div>
-            <div class="col-6">
-                <a href="egrHoliday.html" class="badge badge-primary rounded-0 btn-block">
-                    <i class="fas fa-calendar-alt fa-5x pt-4"></i>
-                    <div class="h3 pt-2 pb-4 font-weight-bold">假日維護</div>
-                </a>
-            </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-1">
+            <iframe src="Holiday?action=calendar" frameborder="0" height="580px" width="1200px"></iframe>
         </div>
     </div>
     <footer class="bg-secondary text-white text-center py-2 fixed-bottom">

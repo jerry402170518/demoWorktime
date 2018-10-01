@@ -76,4 +76,12 @@
     <servlet-name>ForgetPassword</servlet-name>
     <url-pattern>/ForgetPassword</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>Holiday</servlet-name>
+    <servlet-class>controller.HolidayServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Holiday</servlet-name>
+    <url-pattern>/Holiday</url-pattern>
+  </servlet-mapping>
 </web-app>

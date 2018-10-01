@@ -6,7 +6,7 @@ import java.util.Date;
 public class Holiday implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private Date changeDate;
+	private Date holiday;
 
 	private Integer hours;
 
@@ -15,14 +15,6 @@ public class Holiday implements Serializable{
 	private String status;
 
 	public Holiday() {
-	}
-
-	public Date getChangeDate() {
-		return this.changeDate;
-	}
-
-	public void setChangeDate(Date changeDate) {
-		this.changeDate = changeDate;
 	}
 
 	public Integer getHours() {
@@ -47,5 +39,19 @@ public class Holiday implements Serializable{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the holiday
+	 */
+	public Date getHoliday() {
+		return holiday;
+	}
+
+	/**
+	 * @param holiday the holiday to set
+	 */
+	public void setHoliday(Date holiday) {
+		this.holiday = holiday;
 	}
 }
