@@ -42,7 +42,7 @@ jobs:
       - run: gradle build -i
       
       # deploy
-      - run: ./deploy.sh
+      - run: ./~/repo/deploy.sh
 
 
 
