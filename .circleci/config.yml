@@ -22,9 +22,6 @@ jobs:
       TERM: dumb
     
     steps:
-      - add_ssh_keys:
-          fingerprints:
-          - "d7:9d:6e:3a:89:96:7b:30:a9:ff:8f:2f:2b:99:73:f6"
       - checkout
 
       # Download and cache dependencies
@@ -45,7 +42,7 @@ jobs:
       - run: gradle build -i
       
       # deploy
-      - run: ./home/circleci/repo/deploy.sh
+      - run: bash deploy.sh
 
 
 
