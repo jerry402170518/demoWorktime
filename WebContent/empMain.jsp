@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="text-center w-100 ">
                                     <div class="h5 font-weight-bold">上月工時未通過或未繳交筆數</div>
-                                    <div class="h3 text-danger">2筆</div>
+                                    <div class="h3 text-danger"><c:out value="${days}"/>筆</div>
                                     <small>請盡速修改並繳交</small>
                                 </div>
                             </div>
@@ -145,9 +145,18 @@
 	                 	   <td><c:out value="${worktime.status}" /></td>
 	                 	    <% for(int i = 0; i < 7; i++) { 
 	                 	    	pageContext.setAttribute("i", i);
+	                 	    	
 	                		%>
 					            <td>${requestScope.hours[7*loop.index+i]}</td>
+					            
 					        <% } %>
+					        <c:set var="sunday" value="${requestScope.hours[7*loop.index+0]}"/>
+					        <c:set var="monday" value="${requestScope.hours[7*loop.index+1]}"/>
+					        <c:set var="tuesday" value="${requestScope.hours[7*loop.index+2]}"/>
+					        <c:set var="wednesday" value="${requestScope.hours[7*loop.index+3]}"/>
+					        <c:set var="thurday" value="${requestScope.hours[7*loop.index+4]}"/>
+					        <c:set var="friday" value="${requestScope.hours[7*loop.index+5]}"/>
+					        <c:set var="saturday" value="${requestScope.hours[7*loop.index+6]}"/>
 	                 	</tr>
                 	</c:forEach>
 	                
@@ -295,7 +304,6 @@
             }
         };
 
-
         // bar
         var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var colors = Chart.helpers.color;
@@ -307,11 +315,13 @@
                 borderColor: window.chartColors.green,
                 borderWidth: 1,
                 data: [
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
+                    ${sunday},
+                    ${monday},
+                    ${tuesday},
+                    ${wednesday},
+                    ${thurday},
+                    ${friday},
+                    ${saturday}
                 ]
             }
            ]

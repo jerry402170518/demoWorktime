@@ -100,14 +100,16 @@ public class WorktimeServlet extends HttpServlet{
 			//主管審核工時為已通過
 			case "worktimeCheckPass":
 				checkPass(request);
-				System.out.println("PASS");
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				break;
+			//取得未繳交與未通過筆數
+			case "getNoPassAndNoSubmit":
+				getNoPassAndNoSubmit(request);
 				break;
 		}
 
 		
 	}
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -251,4 +253,16 @@ public class WorktimeServlet extends HttpServlet{
 		System.out.println(noPassReason);
 		worktimeService.checkNoPass(submssionId,noPassReason);
 	}
+
+
+	private void getNoPassAndNoSubmit(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
+		String empno = loginInfo.get("empno");
+		int days = worktimeService.getNoPassAndNoSubmit(empno);
+		request.setAttribute("days", days);
+		
+	}
+
+
 }

@@ -462,4 +462,38 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		}
 	}
 
+	@Override
+	public int getNoPassAndNoSubmit(String empno, String month) {
+		// TODO Auto-generated method stub
+		System.out.println(empno);
+		System.out.println(month);
+		
+		int days = 0;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(status) ");
+			sql.append("from submission_history ");
+			sql.append("where status in ('未繳交','未通過') ");
+			sql.append("and empno = ?  ");
+			sql.append("and week_first_day < TO_DATE( ? ,'YYYY-MM') ");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setString(1, empno);
+			pstmt.setString(2, month);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				days = rs.getInt(1);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		System.out.println(days);
+		return days;
+	}
+
 }

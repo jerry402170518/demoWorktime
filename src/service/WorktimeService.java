@@ -115,6 +115,15 @@ public class WorktimeService {
 		wDao.checNokPass(submssionId,noPassReason);
 	}
 
+	public int getNoPassAndNoSubmit(String empno) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+    	Calendar cal = Calendar.getInstance();
+    	String month = sdf.format(cal.getTime());
+    	System.out.println(month);
+		return wDao.getNoPassAndNoSubmit(empno,month);
+	}
+
 
 
 

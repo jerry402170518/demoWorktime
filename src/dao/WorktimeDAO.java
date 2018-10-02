@@ -33,6 +33,8 @@ public interface WorktimeDAO {
 
 	public void checNokPass(String submssionId, String noPassReason);
 
+	public int getNoPassAndNoSubmit(String empno, String month);
+
 	
 
 }
