@@ -42,7 +42,7 @@ jobs:
       - run: gradle build -i
       
       # deploy
-      - run: ./~/repo/deploy.sh
+      - run: ./home/circleci/repo/deploy.sh
 
 
 
