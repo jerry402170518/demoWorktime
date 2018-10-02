@@ -31,7 +31,7 @@
                 <form class="form mt-5" id="loginForm" action="login" method="post">
                     <div class="row justify-content-center">
                         <div class="col-2 text-right mr-4 pt-1">
-                            <span class="h4 text-secondary font-weight-bold">帳號</span>
+                            <span class="h4 text-secondary font-weight-bold">帳號test</span>
                         </div>
                         <div class="col-4" style="border-bottom: 1px solid #555555;">
                             <input type="text" class="form-control" name="inputUsername" id="inputUsername" placeholder="Username" style="border:none;">
