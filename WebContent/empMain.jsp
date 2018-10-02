@@ -69,89 +69,51 @@
     <div class="container-fluid main mt-4">
         <div class="row">
             <div class="col-md-6">
-                <div class="card rounded-0">
-                    <div class="card-body d-flex row justify-content-center align-items-center">
-                        <div>
-                            <i class="fas fa-star h2 mr-2"></i>
+                <div class="row h-100 no-gutters">
+                    <div class="col-md-12">
+                        <div class="card  rounded-0 h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div>
+                                    <i class="fas fa-times fa-3x text-danger pl-5"></i>
+                                </div>
+                                <div class="text-center w-100 ">
+                                    <div class="h5 font-weight-bold">上月工時未通過或未繳交筆數</div>
+                                    <div class="h3 text-danger">2筆</div>
+                                    <small>請盡速修改並繳交</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-center h2">
-                            工時系統重要提醒
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card  rounded-0 h-100">
+                            <a href="mgrCheckWorktime.html" class="h-100 badge badge-success rounded-0 btn-block">
+                                <i class="fas fa-user-check fa-5x pt-5"></i>
+                                <div class="h3 pt-3 font-weight-bold">審核工時</div>
+                            </a>
                         </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時逾期未填寫且未確實繳交者，違規記點一次。
-                        </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時經主管催繳且逾期未繳交者，違規記點兩次。
-                        </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時審核未通過且逾期未繳交者，違規記點兩次。
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card  rounded-0 h-100">
+                            <a href="mgrCallWorktime.html" class="h-100 badge badge-warning rounded-0 btn-block">
+                                <i class="fas fa-bullhorn fa-5x pt-5"></i>
+                                <div class="h3 pt-4 pb-4 font-weight-bold">催繳工時</div>
+                            </a>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card  rounded-0 h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div>
-                            <i class="fas fa-check fa-3x"></i>
-                        </div>
-                        <div class="text-center w-100">
-                            <div class="h5">上周工時通過天數</div>
-                            <div class="h3  text-success">1天</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card  rounded-0 h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div>
-                            <i class="fas fa-times fa-3x"></i>
-                        </div>
-                        <div class="text-center w-100">
-                            <div class="h5">上週工時未通過天數</div>
-                            <div class="h3 text-danger">1天</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-8">
-                <div class="card rounded-0">
+            <div class="col-md-6">
+                <div class="card rounded-0 h-100">
                     <div class="card-header text-center font-weight-bold">
                         上週工時填寫狀態
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col">
                                 <canvas id="barCanvas" width="775" height="387" class="chartjs-render-monitor" style="display: block; "></canvas>
                             </div>
-                            <div class="col-md-4 text-center">
-                                <h4 class="mt-4">
-                                    本周平時總時數
-                                </h4>
-                                <p class="h3 mr-2" style="display: inline">40</p>
-                                <small>hour</small>
-                                <h4 class="mt-3">
-                                    本周加班總時數
-                                </h4>
-                                <p class="h2" style="display: inline">
-                                    20
-                                </p>
-                                <small>hour</small>
-                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 rounded-0">
-                    <div class="card-header text-center font-weight-bold">
-                        工時狀態
-                    </div>
-                    <div class="card-body d-flex align-items-center">
-                        <canvas class="chart-item chartjs-render-monitor" width="550" height="275" style="display: block;"></canvas>
                     </div>
                 </div>
             </div>
@@ -290,7 +252,7 @@
             red: 'rgb(255, 99, 132)',
             orange: 'rgb(255, 159, 64)',
             yellow: 'rgb(255, 205, 86)',
-            green: 'rgb(75, 192, 192)',
+            green: 'rgb(70, 183, 53)',
             blue: 'rgb(54, 162, 235)',
             purple: 'rgb(153, 102, 255)',
             grey: 'rgb(201, 203, 207)'
@@ -338,11 +300,11 @@
         var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var colors = Chart.helpers.color;
         var barChartData = {
-            labels: ["星期一", "星期二", "星期三", "星期四", "星期五"],
+            labels: ["星期日","星期一", "星期二", "星期三", "星期四", "星期五","星期六"],
             datasets: [{
-                label: '平時上班時數',
-                backgroundColor: colors(window.chartColors.red).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.red,
+                label: '時數',
+                backgroundColor: window.chartColors.green,
+                borderColor: window.chartColors.green,
                 borderWidth: 1,
                 data: [
                     randomScalingFactor(),
@@ -351,19 +313,8 @@
                     randomScalingFactor(),
                     randomScalingFactor(),
                 ]
-            }, {
-                label: '加班時數',
-                backgroundColor: colors(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.blue,
-                borderWidth: 1,
-                data: [
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                ]
-            }]
+            }
+           ]
 
         };
 
