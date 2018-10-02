@@ -40,8 +40,6 @@ jobs:
         
       # build
       - run: gradle build -i
-      # debug
-      - run: ls -la
       # deploy
       - run: bash deploy.sh
 
