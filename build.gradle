@@ -2,10 +2,28 @@ plugins {
     id 'war'  
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        java.outputDir = file('WebContent/WEB-INF/classes')
+    }
+}
+
 repositories {
     jcenter()
 }
 
 dependencies {
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0' 
+    compile files('WebContent/WEB-INF/lib/ojdbc8.jar')
+    compile files('WebContent/WEB-INF/lib/jstl-1.2.jar')
+    compile files('WebContent/WEB-INF/lib/javax.mail.jar')
+}
+
+war {
+    archiveName 'demoWorktime.war'
+    from('WebContent')
+    destinationDir = file("./")
 }
