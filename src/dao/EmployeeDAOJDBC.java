@@ -300,7 +300,7 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("update employee ");
-			sql.append("set password = ? , account_begin = sysdate");
+			sql.append("set password = ? , account_begin = sysdate ");
 			sql.append("where empno = ? ");
 			
 			conn = ConnectionHelper.getConnection();

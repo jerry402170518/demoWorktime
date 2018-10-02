@@ -12,7 +12,7 @@ public class ConnectionHelper {
 			try {
 				Context initContext = new InitialContext();
 				Context envContext = (Context) initContext.lookup("java:/comp/env");
-				DataSource ds = (DataSource) envContext.lookup("jdbc/worktime");
+				DataSource ds = (DataSource) envContext.lookup("jdbc/yan");
 				conn = ds.getConnection();
 
 			} catch (Exception e) {
