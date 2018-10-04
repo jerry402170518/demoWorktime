@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,11 +48,21 @@ public class WorktimeServlet extends HttpServlet{
 		switch(action){
 			//取得當月工時資訊
 			case "getWriteWorktime":
-				doGetEmpWorktime(request);
+				try {
+					doGetEmpWorktime(request);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			//轉交至填寫工時頁面
 			case "writeWorktime_page":
-				doGetEmpWorktime(request);
+				try {
+					doGetEmpWorktime(request);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
 				request.getRequestDispatcher(WRITEWORKTIME_PAGE).forward(request, response);
 				break;
 			//查詢工時
@@ -117,17 +128,19 @@ public class WorktimeServlet extends HttpServlet{
 		doGet(request, response);
 	}
 	
-	private void doGetEmpWorktime(HttpServletRequest request) {
+	private void doGetEmpWorktime(HttpServletRequest request) throws ParseException {
 		// TODO Auto-generated method stub
 		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
 		String empno = loginInfo.get("empno");
 		String name = loginInfo.get("name");
+		String currentMonth = request.getParameter("currentMonth");
+
 		List<String> weekLastDays = new ArrayList<String>();
-		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno);
+		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
 		//檢查本月是否已建立工時表
-		if(worktimeService.checkCurrentMonth(empno)) {
-			worktimeService.insertWorktime(empno);
-			worktimeList = worktimeService.getWorktimeInfo(empno);
+		if(worktimeList.size() == 0) {
+			worktimeService.insertWorktime(empno, currentMonth);
+			worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
 		}
 		
 		List<Integer> hours = worktimeService.getHours(worktimeList);
@@ -260,6 +273,7 @@ public class WorktimeServlet extends HttpServlet{
 		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
 		String empno = loginInfo.get("empno");
 		int days = worktimeService.getNoPassAndNoSubmit(empno);
+		int lastweek = worktimeService.getlastWeekHours(empno);
 		request.setAttribute("days", days);
 		
 	}

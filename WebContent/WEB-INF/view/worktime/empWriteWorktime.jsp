@@ -113,6 +113,11 @@
 							</c:choose>
 	                       </td>
 	                 	</tr>
+	                 	<c:if test="${worktime.status=='未通過'}">
+	                 		<tr>
+	                 			
+	                 		</tr>
+	                 	</c:if>
                 	</c:forEach>
 	                
                 </tbody>

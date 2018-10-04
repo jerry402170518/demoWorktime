@@ -1,6 +1,7 @@
 package dao;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,6 @@ import model.WorktimeDetail;
 public interface WorktimeDAO {
 	
 	public List<SubmissionHistory> getWorktime(String empno);
-
-	public void insertWorktime(String empno);
 
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList);
 
@@ -35,6 +34,10 @@ public interface WorktimeDAO {
 
 	public int getNoPassAndNoSubmit(String empno, String month);
 
-	
+	public int getlastWeekHours(String empno, String sunday);
+
+	public List<SubmissionHistory> getWorktimeInfo(String empno, String beginDate, String endDate);
+
+	public void insertWorktime(String empno, Calendar calBegin);
 
 }

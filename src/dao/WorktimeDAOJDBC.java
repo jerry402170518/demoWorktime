@@ -107,67 +107,11 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public void insertWorktime(String empno) {
-		// TODO Auto-generated method stub
-		//取得第一個星期日
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.DATE, 1); 
-		while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-		{
-			cal.add(Calendar.DATE, 1);
-		}
-		
-		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
-		int currentMonth =cal.get(Calendar.MONTH)+1;
-		int nextMonth = cal.get(Calendar.MONTH)+1;
-		
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE)");
-			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null)");
-			
-			conn = ConnectionHelper.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,empno);
-			
-			while(currentMonth == nextMonth) {
-			    String firstDayOfMonth = sdfDate.format(cal.getTime());
-				pstmt.setString(2, firstDayOfMonth);
-				rs = pstmt.executeQuery();
-				cal.add(Calendar.DAY_OF_MONTH, 7);
-				nextMonth = cal.get(Calendar.MONTH)+1;
-				System.out.println("test");
-			}
-				
-			
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		
-	}
-
-	@Override
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList) {
 		// TODO Auto-generated method stub
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<Integer> hours = new ArrayList<>();
-		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
-		Calendar calBegin = Calendar.getInstance();
-		Calendar calEnd = Calendar.getInstance();
-		calBegin.set(Calendar.DATE, 1); 
-		while (calBegin.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-		{
-			calBegin.add(Calendar.DATE, 1);
-		}
 		
-		calEnd.set(Calendar.DATE, calEnd.getActualMaximum(Calendar.DATE));
-    	while (calEnd.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)
-		{
-    		calEnd.add(Calendar.DATE, 1);
-		}
-    	calEnd.add(Calendar.DATE, 1);
-    	String endDate = sdfDate.format(calEnd.getTime());
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select sum(hours) from working_records where empno = ?");
@@ -175,18 +119,20 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1,worktimeList.get(0).getEmpNo());
-			while(!calBegin.getTime().equals(calEnd.getTime())){
-				
-				String beginDate = sdfDate.format(calBegin.getTime());
-				
-				pstmt.setString(2,beginDate);
-				
-				rs = pstmt.executeQuery();
-				
-				if(rs.next()) {
-					hours.add(rs.getInt(1));
+			System.out.println("TEST@0");
+			for(int i = 0; i < worktimeList.size(); i++) {
+				Date weekfirstDay = worktimeList.get(i).getWeekFirstDay();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(weekfirstDay); 
+				for(int j = 0; j < 7; j++) {
+					pstmt.setString(2, sdf.format(weekfirstDay));
+					rs = pstmt.executeQuery();
+					if(rs.next()) {
+						hours.add(rs.getInt(1));
+					}
+					c.add(Calendar.DATE, 1);
+					weekfirstDay = c.getTime();
 				}
-				calBegin.add(Calendar.DATE, 1);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -494,6 +440,96 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		}
 		System.out.println(days);
 		return days;
+	}
+
+	@Override
+	public int getlastWeekHours(String empno, String sunday) {
+		// TODO Auto-generated method stub
+//		try {
+//			StringBuilder sql = new StringBuilder();
+//			sql.append("UPDATE SUBMISSION_HISTORY ");
+//			sql.append("SET STATUS = '未通過'  , NOTE = ? ");
+//			sql.append("WHERE ID = ? ");
+//			conn = ConnectionHelper.getConnection();
+//			pstmt = conn.prepareStatement(sql.toString());
+//			
+//			pstmt.setString(1, noPassReason);
+//			pstmt.setString(2, submssionId);
+//			pstmt.executeUpdate();
+//			
+//		}catch(SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			close();
+//		}
+		return 0;
+	}
+
+	@Override
+	public List<SubmissionHistory> getWorktimeInfo(String empno, String beginDate, String endDate) {
+		// TODO Auto-generated method stub
+		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from submission_history ");
+			sql.append("where week_first_day ");
+			sql.append("between TO_DATE( ? ,'YYYY-MM-DD') " );
+			sql.append("and TO_DATE( ? ,'YYYY-MM-DD') ");
+			sql.append("and empno = ? ");
+			sql.append("order by week_first_day ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,beginDate);
+			pstmt.setString(2,endDate);
+			pstmt.setString(3,empno);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				worktimeList.add(createWorktime(rs));
+			}
+				
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return worktimeList;
+	}
+
+	@Override
+	public void insertWorktime(String empno, Calendar calBegin) {
+		// TODO Auto-generated method stub
+		
+		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
+		int currentMonth =calBegin.get(Calendar.MONTH)+1;
+		int nextMonth = calBegin.get(Calendar.MONTH)+1;
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE)");
+			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null)");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,empno);
+			
+			while(currentMonth == nextMonth) {
+			    String firstDayOfMonth = sdfDate.format(calBegin.getTime());
+				pstmt.setString(2, firstDayOfMonth);
+				rs = pstmt.executeQuery();
+				calBegin.add(Calendar.DAY_OF_MONTH, 7);
+				nextMonth = calBegin.get(Calendar.MONTH)+1;
+			}
+				
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
 	}
 
 }

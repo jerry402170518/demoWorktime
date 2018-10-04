@@ -1,7 +1,9 @@
 package service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +22,9 @@ public class WorktimeService {
 	
 	public List<SubmissionHistory> getWorktimeInfo(String empno) {
 		// TODO Auto-generated method stub
+		//取得當月的日期
+	    
 		return wDao.getWorktime(empno);
-	}
-
-	public void insertWorktime(String empno) {
-		// TODO Auto-generated method stub
-		wDao.insertWorktime(empno);
 	}
 
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList) {
@@ -122,6 +121,77 @@ public class WorktimeService {
     	String month = sdf.format(cal.getTime());
     	System.out.println(month);
 		return wDao.getNoPassAndNoSubmit(empno,month);
+	}
+
+	public int getlastWeekHours(String empno) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+    	String sunday = sdf.format(cal.getTime());
+		return wDao.getlastWeekHours(empno, sunday);
+	}
+
+	public List<SubmissionHistory> getWorktimeInfo(String empno, String currentMonth) {
+		// TODO Auto-generated method stub
+		if(currentMonth == null) {
+			 SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM");
+		     Calendar c = Calendar.getInstance();
+		     c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		     currentMonth = sdfDate.format(c.getTime());
+		}
+		Map<String, String> betweenDate = new HashMap<>();
+		betweenDate = getbetweenDate(currentMonth);
+		String beginDate = betweenDate.get("beginDate");
+		String endDate = betweenDate.get("endDate");
+		return wDao.getWorktimeInfo(empno, beginDate, endDate);
+	}
+
+
+	public void insertWorktime(String empno, String currentMonth) throws ParseException {
+		// TODO Auto-generated method stub
+		if(currentMonth == null) {
+			 SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM");
+		     Calendar c = Calendar.getInstance();
+		     c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		     currentMonth = sdfDate.format(c.getTime());
+		     System.out.println(sdfDate.format(c.getTime()));
+		}
+		
+		Map<String, String> betweenDate = new HashMap<>();
+		betweenDate = getbetweenDate(currentMonth);
+		String beginDate = betweenDate.get("beginDate");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calBegin = Calendar.getInstance();
+		calBegin.setTime(sdf.parse(beginDate));
+		wDao.insertWorktime(empno, calBegin);
+	}
+	
+	public Map<String, String> getbetweenDate(String currentMonth) {
+		String[] parts = currentMonth.split("-");
+    	String year = parts[0]; 
+    	String month = parts[1]; 
+    	
+    	SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
+    	Calendar c = Calendar.getInstance();
+    	c.set(Calendar.YEAR, Integer.parseInt(year));
+    	c.set(Calendar.MONTH, Integer.parseInt(month)-1);
+    	c.set(Calendar.DATE, 1);
+    	c.set(Calendar.DAY_OF_MONTH, 1);
+    	while (c.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+		{
+			c.add(Calendar.DATE, 1);
+		}
+	    String beginDate = sdfDate.format(c.getTime());
+	    c.add(Calendar.MONTH,1);
+	    c.set(Calendar.DATE, 1); 
+	    String endDate = sdfDate.format(c.getTime());
+	    Map<String, String> betweenDate = new HashMap<>();
+	    betweenDate.put("beginDate", beginDate);
+	    betweenDate.put("endDate", endDate);
+		return betweenDate;
+		
 	}
 
 
