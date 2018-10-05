@@ -72,7 +72,7 @@
                 填寫工時
             </div>
             <div class="card-body">
-
+           		 <h4><span class="badge badge-success p-2">${requestScope.weekFirstDay}~${requestScope.weekLastDay}</span></h4>
             </div>
             <card-footer>
                 <table class="table table-bordered mb-0 table-hover" id="project">
@@ -134,10 +134,14 @@
                                 </td>
                             </tr>
                        		 </form>
-                       		 <form action="Worktime?action=submitWortkime">
+                       		 
+                    		<c:if test="${not empty requestScope.errorMsg}"><tr><td colspan="5" class="text-danger">${requestScope.errorMsg}</td></tr></c:if>
+                       		 <form action="WorktimeDetail?action=submitWortkime" method="post">
+                       		 <input type="hidden" name="weekFirstDay" value="${requestScope.weekFirstDay}">
                             <tr>
                             	<td colspan="5" class="align-middle">
-               						<button type="submit" class="btn btn-warning" id="addProjectBtn">提交本周工時</button>
+                          
+               						<button type="submit" class="btn btn-warning">提交本周工時</button>
                					</td>
                             </tr>
                             </form>
@@ -147,7 +151,7 @@
             </card-footer>
         </div>
     </div>
-    <footer class="bg-secondary text-white text-center py-2 my-4">
+    <footer class="bg-secondary text-white text-center mt-3">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
     <!-- personal Modal-->

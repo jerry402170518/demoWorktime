@@ -32,9 +32,9 @@ public interface WorktimeDAO {
 
 	public void checNokPass(String submssionId, String noPassReason);
 
-	public int getNoPassAndNoSubmit(String empno, String month);
+	public int getNoPassAndNoSubmit(String empno, String currentMonth, String lastMonth);
 
-	public int getlastWeekHours(String empno, String sunday);
+	public List<Integer> getlastWeekHours(String empno);
 
 	public List<SubmissionHistory> getWorktimeInfo(String empno, String beginDate, String endDate);
 

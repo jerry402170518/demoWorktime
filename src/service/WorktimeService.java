@@ -116,20 +116,21 @@ public class WorktimeService {
 
 	public int getNoPassAndNoSubmit(String empno) {
 		// TODO Auto-generated method stub
+		//查詢出當天日期屬於哪個月份的工時範圍，並傳入當月份的字串 EX : '2018-09'
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-    	Calendar cal = Calendar.getInstance();
-    	String month = sdf.format(cal.getTime());
-    	System.out.println(month);
-		return wDao.getNoPassAndNoSubmit(empno,month);
+		Calendar c = Calendar.getInstance();
+	    c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+	    String currentMonth = sdf.format(c.getTime());
+	    System.out.println(currentMonth);
+	    c.add(Calendar.MONTH, -1);
+	    String lastMonth = sdf.format(c.getTime());
+	    System.out.println(lastMonth);
+		return wDao.getNoPassAndNoSubmit(empno, currentMonth, lastMonth);
 	}
 
-	public int getlastWeekHours(String empno) {
+	public List<Integer> getlastWeekHours(String empno) {
 		// TODO Auto-generated method stub
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	Calendar cal = Calendar.getInstance();
-    	cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-    	String sunday = sdf.format(cal.getTime());
-		return wDao.getlastWeekHours(empno, sunday);
+		return wDao.getlastWeekHours(empno);
 	}
 
 	public List<SubmissionHistory> getWorktimeInfo(String empno, String currentMonth) {

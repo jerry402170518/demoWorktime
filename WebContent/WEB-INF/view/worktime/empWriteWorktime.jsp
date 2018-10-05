@@ -66,11 +66,28 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
-    <div class="card mt-4 d-flex rounded-0 text-center ">
+    <div class="card mt-1 d-flex rounded-0 text-center ">
         <div class="card-header font-weight-bold">
-            本月工時填寫狀態
+            工時填寫
         </div>
         <div class="card-body">
+        	<div class="row d-flex justify-content-center align-items-center mb-3">
+                <div class="col-5">
+                    <form action="Worktime?action=writeWorktime_page" method="post">
+                        <div class="form-row">
+                            <p class="col mt-1 mr-2 text-right font-weight-bold">
+                       		         請輸入月份:
+                            </p>
+                            <div class="col">
+                                <input type="text" name="currentMonth" class="form-control" placeholder="範例格式:2018-09")>
+                            </div>
+                            <div class="col">
+                                <input type="submit" class="btn btn-success" value="查詢">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table class="table table-bordered mb-0 table-hover">
                 <thead class="thead-dark">
                     <tr>
@@ -115,7 +132,8 @@
 	                 	</tr>
 	                 	<c:if test="${worktime.status=='未通過'}">
 	                 		<tr>
-	                 			
+	                 			<td>未通過原因</td>
+	                 			<td colspan="10" class="text-danger font-weight-bold"><c:out value="${worktime.note}"/></td>
 	                 		</tr>
 	                 	</c:if>
                 	</c:forEach>
@@ -162,7 +180,7 @@
             </div>
         </div>
     </div>
-    <footer class="bg-secondary text-white text-center py-2 fixed-bottom" >
+    <footer class="bg-secondary text-white text-center mt-4 " >
             工時系統 Copyright © 2018 YanRu Lin All rights reserved
         </footer>
     <!-- changePwd Modal -->

@@ -114,8 +114,14 @@ public class WorktimeServlet extends HttpServlet{
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
 				break;
 			//取得未繳交與未通過筆數
-			case "getNoPassAndNoSubmit":
-				getNoPassAndNoSubmit(request);
+			case "getEmpMainOnfo":
+				getEmpMainOnfo(request);
+				try {
+					doGetEmpWorktime(request);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 		}
 
@@ -142,7 +148,6 @@ public class WorktimeServlet extends HttpServlet{
 			worktimeService.insertWorktime(empno, currentMonth);
 			worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
 		}
-		
 		List<Integer> hours = worktimeService.getHours(worktimeList);
 		for(int i=0; i < worktimeList.size(); i++){
 			Calendar c = Calendar.getInstance();
@@ -268,14 +273,14 @@ public class WorktimeServlet extends HttpServlet{
 	}
 
 
-	private void getNoPassAndNoSubmit(HttpServletRequest request) {
+	private void getEmpMainOnfo(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
 		String empno = loginInfo.get("empno");
 		int days = worktimeService.getNoPassAndNoSubmit(empno);
-		int lastweek = worktimeService.getlastWeekHours(empno);
+		List<Integer> lastweek = worktimeService.getlastWeekHours(empno);
 		request.setAttribute("days", days);
-		
+		request.setAttribute("lastweek", lastweek);
 	}
 
 

@@ -67,8 +67,7 @@ public class Login extends HttpServlet{
 			if(login.get("end")==null) {	
 				switch (login.get("position")){
 				case "員工":
-					request.getRequestDispatcher("Worktime?action=getWriteWorktime").include(request, response);
-					request.getRequestDispatcher("Worktime?action=getNoPassAndNoSubmit").include(request, response);
+					request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
 					path=EMPLOYEE_PAGE;
 					break;
 				case "主管":

@@ -177,4 +177,27 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		return worktimeDetailList;
 	}
 
+	@Override
+	public void submitWortkime(String empno, String weekFirstDay) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("update submission_history ");
+			sql.append("set status = '審核中' ");
+			sql.append("where empno= ?  ");
+			sql.append("and week_first_day = TO_DATE( ? ,'YYYY-MM-DD')");
+
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, empno);
+			pstmt.setString(2, weekFirstDay);
+			pstmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+
 }

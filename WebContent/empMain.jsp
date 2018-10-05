@@ -87,16 +87,16 @@
                     <div class="col-md-6">
                         <div class="card  rounded-0 h-100">
                             <a href="mgrCheckWorktime.html" class="h-100 badge badge-success rounded-0 btn-block">
-                                <i class="fas fa-user-check fa-5x pt-5"></i>
-                                <div class="h3 pt-3 font-weight-bold">審核工時</div>
+                            	<i class="fas fa-pen fa-5x pt-5"></i>
+                                <div class="h3 pt-3 font-weight-bold">填寫工時</div>
                             </a>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card  rounded-0 h-100">
                             <a href="mgrCallWorktime.html" class="h-100 badge badge-warning rounded-0 btn-block">
-                                <i class="fas fa-bullhorn fa-5x pt-5"></i>
-                                <div class="h3 pt-4 pb-4 font-weight-bold">催繳工時</div>
+                            	<i class="fas fa-search fa-5x pt-5"></i>
+                                <div class="h3 pt-4 pb-4 font-weight-bold">查詢工時</div>
                             </a>
 
                         </div>
@@ -150,13 +150,6 @@
 					            <td>${requestScope.hours[7*loop.index+i]}</td>
 					            
 					        <% } %>
-					        <c:set var="sunday" value="${requestScope.hours[7*loop.index+0]}"/>
-					        <c:set var="monday" value="${requestScope.hours[7*loop.index+1]}"/>
-					        <c:set var="tuesday" value="${requestScope.hours[7*loop.index+2]}"/>
-					        <c:set var="wednesday" value="${requestScope.hours[7*loop.index+3]}"/>
-					        <c:set var="thurday" value="${requestScope.hours[7*loop.index+4]}"/>
-					        <c:set var="friday" value="${requestScope.hours[7*loop.index+5]}"/>
-					        <c:set var="saturday" value="${requestScope.hours[7*loop.index+6]}"/>
 	                 	</tr>
                 	</c:forEach>
 	                
@@ -315,13 +308,13 @@
                 borderColor: window.chartColors.green,
                 borderWidth: 1,
                 data: [
-                    ${sunday},
-                    ${monday},
-                    ${tuesday},
-                    ${wednesday},
-                    ${thurday},
-                    ${friday},
-                    ${saturday}
+                	${requestScope.lastweek[0]},
+                	${requestScope.lastweek[1]},
+                	${requestScope.lastweek[2]},
+                	${requestScope.lastweek[3]},
+                	${requestScope.lastweek[4]},
+                	${requestScope.lastweek[5]},
+                	${requestScope.lastweek[6]},
                 ]
             }
            ]
@@ -353,7 +346,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: '工時概況'
                     }
                 }
             });

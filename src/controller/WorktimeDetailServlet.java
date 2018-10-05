@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -66,10 +67,12 @@ public class WorktimeDetailServlet extends HttpServlet{
 					doMgrGetEmpWorktimeDetail(request);
 					request.getRequestDispatcher(WORKTIME_DETAIL_PAGE).forward(request, response);
 					break;
+				case "submitWortkime":
+					page = submitWortkime(request);
+					request.getRequestDispatcher(page).forward(request, response);
+					break;
 			}
 		}
-
-
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
 			// TODO Auto-generated method stub
@@ -86,6 +89,10 @@ public class WorktimeDetailServlet extends HttpServlet{
 			System.out.println(weekFirstDay);
 			List<WorktimeDetail> worktimeDetailList = worktimeDetailService.getWorktimeDetailInfo(empno, weekFirstDay);
 			
+			LocalDate localDateWeekFirstDay = LocalDate.parse(weekFirstDay);
+	    	LocalDate localDateWeekLastDay = localDateWeekFirstDay.plusDays(6);
+	    	
+	    	request.setAttribute("weekLastDay", localDateWeekLastDay);
 			request.setAttribute("worktimeDetailList", worktimeDetailList);
 			request.setAttribute("weekFirstDay",weekFirstDay);
 		}
@@ -116,7 +123,18 @@ public class WorktimeDetailServlet extends HttpServlet{
 			String hours = request.getParameter("hours");
 			String weekFirstDay = request.getParameter("weekFirstDay");
 			
-			worktimeDetailService.insertWorktime(empno, currentDate, project, workNote, hours);
+			LocalDate localDateWeekFirstDay = LocalDate.parse(weekFirstDay);
+	    	LocalDate localDateWeekLastDay = localDateWeekFirstDay.plusDays(6);
+	    	LocalDate mid = LocalDate.parse(currentDate); 
+	    	
+	    	
+	    	if(!mid.isAfter(localDateWeekLastDay) && !mid.isBefore(localDateWeekFirstDay)) {
+				worktimeDetailService.insertWorktime(empno, currentDate, project, workNote, hours);
+	    	}else {
+	    		String errorMsg = "你輸入的日期未介於該周別之中，請填寫正確的日期";
+	    		request.setAttribute("errorMsg", errorMsg);
+	    		return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
+	    	}
 			
 			System.out.println(weekFirstDay);
 			System.out.println("新增成功");
@@ -133,5 +151,20 @@ public class WorktimeDetailServlet extends HttpServlet{
 			request.setAttribute("worktimeDetailList", worktimeDetailList);
 			request.setAttribute("weekFirstDay",weekFirstDay);
 		}
+		
+
+		private String submitWortkime(HttpServletRequest request) {
+			// TODO Auto-generated method stub
+			Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
+			String empno = loginInfo.get("empno");
+			String weekFirstDay = request.getParameter("weekFirstDay");
+			System.out.println(empno);
+			System.out.println(weekFirstDay);
+			worktimeDetailService.submitWortkime(empno, weekFirstDay);
+			
+			return "/Worktime?action=writeWorktime_page";
+		}
+
+
 
 }

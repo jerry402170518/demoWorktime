@@ -30,4 +30,9 @@ public class WorktimeDetailService {
 		return wDao.mgrGetWorktimeDetailInfo(weekFirstDay);
 	}
 
+	public void submitWortkime(String empno, String weekFirstDay) {
+		// TODO Auto-generated method stub
+		wDao.submitWortkime(empno, weekFirstDay);
+	}
+
 }

@@ -99,6 +99,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			worktime.setWeekFirstDay(rs.getDate("WEEK_FIRST_DAY"));
 			worktime.setStatus(rs.getString("STATUS"));
 			worktime.setId(rs.getInt("id"));
+			worktime.setNote(rs.getString("NOTE"));
 			return worktime;
 		} catch (SQLException e) {
 			// TODO 自動產生的 catch 區塊
@@ -119,7 +120,6 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1,worktimeList.get(0).getEmpNo());
-			System.out.println("TEST@0");
 			for(int i = 0; i < worktimeList.size(); i++) {
 				Date weekfirstDay = worktimeList.get(i).getWeekFirstDay();
 				Calendar c = Calendar.getInstance(); 
@@ -409,11 +409,8 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public int getNoPassAndNoSubmit(String empno, String month) {
+	public int getNoPassAndNoSubmit(String empno, String currentMonth, String lastMonth) {
 		// TODO Auto-generated method stub
-		System.out.println(empno);
-		System.out.println(month);
-		
 		int days = 0;
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -422,11 +419,13 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			sql.append("where status in ('未繳交','未通過') ");
 			sql.append("and empno = ?  ");
 			sql.append("and week_first_day < TO_DATE( ? ,'YYYY-MM') ");
+			sql.append("and week_first_day >= TO_DATE( ? ,'YYYY-MM') ");
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			
 			pstmt.setString(1, empno);
-			pstmt.setString(2, month);
+			pstmt.setString(2, currentMonth);
+			pstmt.setString(3, lastMonth);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -443,26 +442,37 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 	}
 
 	@Override
-	public int getlastWeekHours(String empno, String sunday) {
+	public List<Integer> getlastWeekHours(String empno) {
 		// TODO Auto-generated method stub
-//		try {
-//			StringBuilder sql = new StringBuilder();
-//			sql.append("UPDATE SUBMISSION_HISTORY ");
-//			sql.append("SET STATUS = '未通過'  , NOTE = ? ");
-//			sql.append("WHERE ID = ? ");
-//			conn = ConnectionHelper.getConnection();
-//			pstmt = conn.prepareStatement(sql.toString());
-//			
-//			pstmt.setString(1, noPassReason);
-//			pstmt.setString(2, submssionId);
-//			pstmt.executeUpdate();
-//			
-//		}catch(SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			close();
-//		}
-		return 0;
+		List<Integer> hours = new ArrayList<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+    	cal.add(Calendar.DATE, -7);
+    	
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select sum(hours) from working_records where empno = ? ");
+			sql.append("and working_date = TO_DATE(?,'YYYY-MM-DD') ");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, empno);
+			for(int i = 0; i < 7; i++) {
+				pstmt.setString(2, sdf.format(cal.getTime()));
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					hours.add(rs.getInt(1));
+				}
+				cal.add(Calendar.DATE, 1);
+			}
+			pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return hours;
 	}
 
 	@Override
