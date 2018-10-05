@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
         html {
             font-size: 20px;
@@ -46,7 +47,7 @@
                 </li>
             </ul>
             <div class="btn-group mr-2">
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" style="cursor:default">
                     <i class="fas fa-user mr-2"></i>${sessionScope.login.name}</button>
                 <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -62,7 +63,7 @@
                     </button>
                 </div>
             </div>
-            <a href="login.html" class="btn btn-warning navBtn font-weight-bold mr-3">
+            <a href="Logout" class="btn btn-warning navBtn font-weight-bold mr-3">
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
@@ -86,7 +87,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card  rounded-0 h-100">
-                            <a href="mgrCheckWorktime.html" class="h-100 badge badge-success rounded-0 btn-block">
+                            <a href="Worktime?action=writeWorktime_page" class="h-100 badge badge-success rounded-0 btn-block">
                             	<i class="fas fa-pen fa-5x pt-5"></i>
                                 <div class="h3 pt-3 font-weight-bold">填寫工時</div>
                             </a>
@@ -94,7 +95,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card  rounded-0 h-100">
-                            <a href="mgrCallWorktime.html" class="h-100 badge badge-warning rounded-0 btn-block">
+                            <a href="Worktime?action=searchWorktime_page" class="h-100 badge badge-warning rounded-0 btn-block">
                             	<i class="fas fa-search fa-5x pt-5"></i>
                                 <div class="h3 pt-4 pb-4 font-weight-bold">查詢工時</div>
                             </a>
@@ -218,24 +219,40 @@
                         <div class="form-group">
                             <label>請輸入舊密碼</label>
                             <input name="oldPwd" id="oldPwd" class="form-control old-pw" type="password">
-                            <span class="error-msg" style="color: red"></span>
+	                         <c:if test="${not empty oldPwdError}">
+							 	<script>
+						 		 	swal ( "${oldPwdError}" ,  "請輸入正確的舊密碼!" ,  "error" )
+								</script>
+							 </c:if>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label>請輸入新密碼</label>
                             <input id="newPwdFirst" name="newPwdFirst" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
                             />
-                            <span class="error-msg" style="color: red"></span>
+                            <c:if test="${not empty pwdTheSame}">
+							    <script>
+							   		 swal ( "${pwdTheSame}" ,  "請輸入不一樣的新密碼!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
                         <div class="form-group">
                             <label>請再次輸入新密碼</label>
                             <input placeholder="再次新確認密碼" class="form-control new-pw" type="password" name="newPwdSecond" />
-                            <span class="error-msg" style="color: red"></span>
+                            <c:if test="${not empty doubleCheckError}">
+							    <script>
+							   		 swal ( "${doubleCheckError}" ,  "請確認輸入的兩欄新密碼是否相同!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
-
+						<c:if test="${not empty changeSuccess}">
+							    <script>
+							   		 swal ( "${changeSuccess}","請記住新密碼", "success" )
+							    </script>
+						</c:if>
                         <div class="modal-footer pr-0">
                             <button type="submit" class="btn btn-success">確定變更</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-
                         </div>
                     </form>
                 </div>
