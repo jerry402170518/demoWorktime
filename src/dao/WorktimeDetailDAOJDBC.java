@@ -200,4 +200,30 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}
 	}
 
+	@Override
+	public boolean checkHolidayOrNot(String currentDate) {
+		// TODO Auto-generated method stub
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) from holidays ");
+			sql.append("where holiday = TO_DATE( ? ,'YYYY-MM-DD') ");
+
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, currentDate);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getInt(1) == 1) {
+					return true;
+				}
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return false;
+	}
+
 }

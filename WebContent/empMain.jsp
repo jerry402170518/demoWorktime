@@ -148,8 +148,10 @@
 	                 	    	pageContext.setAttribute("i", i);
 	                 	    	
 	                		%>
-					            <td>${requestScope.hours[7*loop.index+i]}</td>
-					            
+					           <td>
+					            	<c:if test="${requestScope.holiday[7*loop.index+i] == null or requestScope.holiday[7*loop.index+i] != null && requestScope.hours[7*loop.index+i]>0}"><span>${requestScope.hours[7*loop.index+i]}</span></c:if>
+					            	<span class="text-danger" style="display:block">${requestScope.holiday[7*loop.index+i]}</span>
+					            </td>
 					        <% } %>
 	                 	</tr>
                 	</c:forEach>
@@ -161,7 +163,7 @@
     </div>
 
     </div>
-    <footer class="bg-secondary text-white text-center py-2 my-4">
+    <footer class="bg-secondary text-white text-center py-2">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
 

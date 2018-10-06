@@ -8,6 +8,7 @@ import java.util.Map;
 import dao.HolidayDAO;
 import dao.HolidayDAOJDBC;
 import model.Holiday;
+import model.SubmissionHistory;
 
 public class HolidayService {
 
@@ -34,5 +35,9 @@ public class HolidayService {
 	public void deleteHoliday(String holiday) {
 		// TODO Auto-generated method stub
 		hDao.deleteHoliday(holiday);
+	}
+	public List<String> getHoliday(List<SubmissionHistory> worktimeList) {
+		// TODO Auto-generated method stub
+		return hDao.getHoliday(worktimeList);
 	}
 }

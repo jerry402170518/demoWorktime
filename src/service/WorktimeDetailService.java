@@ -35,4 +35,9 @@ public class WorktimeDetailService {
 		wDao.submitWortkime(empno, weekFirstDay);
 	}
 
+	public boolean checkHolidayOrNot(String currentDate) {
+		// TODO Auto-generated method stub
+		return wDao.checkHolidayOrNot(currentDate);
+	}
+
 }

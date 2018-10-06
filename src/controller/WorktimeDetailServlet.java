@@ -129,7 +129,13 @@ public class WorktimeDetailServlet extends HttpServlet{
 	    	
 	    	
 	    	if(!mid.isAfter(localDateWeekLastDay) && !mid.isBefore(localDateWeekFirstDay)) {
-				worktimeDetailService.insertWorktime(empno, currentDate, project, workNote, hours);
+	    		if(!worktimeDetailService.checkHolidayOrNot(currentDate)) {
+					worktimeDetailService.insertWorktime(empno, currentDate, project, workNote, hours);					
+	    		}else {
+	    			String errorMsg = "你輸入的日期為放假日，請重新確認所填寫的日期";
+		    		request.setAttribute("errorMsg", errorMsg);
+		    		return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
+	    		}
 	    	}else {
 	    		String errorMsg = "你輸入的日期未介於該周別之中，請填寫正確的日期";
 	    		request.setAttribute("errorMsg", errorMsg);

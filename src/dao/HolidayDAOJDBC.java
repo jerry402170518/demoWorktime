@@ -5,6 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import model.SubmissionHistory;
 
 public class HolidayDAOJDBC implements HolidayDAO{
 	Connection conn = null;
@@ -135,6 +142,44 @@ public class HolidayDAOJDBC implements HolidayDAO{
 		}finally {
 			close();
 		}
+	}
+
+
+	@Override
+	public List<String> getHoliday(List<SubmissionHistory> worktimeList) {
+		// TODO Auto-generated method stub
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<String> holiday = new ArrayList<>();
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from holidays ");
+			sql.append("where holiday = TO_DATE( ? ,'YYYY-MM-DD')");
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			for(int i = 0; i < worktimeList.size(); i++) {
+				Date weekfirstDay = worktimeList.get(i).getWeekFirstDay();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(weekfirstDay); 
+				for(int j = 0; j < 7; j++) {
+					pstmt.setString(1, sdf.format(weekfirstDay));
+					rs = pstmt.executeQuery();
+					if(rs.next()) {
+						holiday.add(rs.getString("REASON"));
+					}else {
+						holiday.add(null);
+					}
+					c.add(Calendar.DATE, 1);
+					weekfirstDay = c.getTime();
+				}
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return holiday;
 	}
 
 }

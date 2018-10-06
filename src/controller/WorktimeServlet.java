@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.SubmissionHistory;
 import model.WorktimeDetail;
+import service.HolidayService;
 import service.WorktimeService;
 import model.NoSubmitWorktime;
 
@@ -27,6 +28,7 @@ public class WorktimeServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	private WorktimeService worktimeService = new WorktimeService();
+	private HolidayService holidayService = new HolidayService();
 	
 	private static final String WRITEWORKTIME_PAGE = "/WEB-INF/view/worktime/empWriteWorktime.jsp";
 	private static final String SEARCHWORKTIME_PAGE = "/WEB-INF/view/employee/empSearchWorktime.jsp";
@@ -149,6 +151,8 @@ public class WorktimeServlet extends HttpServlet{
 			worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
 		}
 		List<Integer> hours = worktimeService.getHours(worktimeList);
+		List<String> holiday = holidayService.getHoliday(worktimeList);
+		
 		for(int i=0; i < worktimeList.size(); i++){
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -158,6 +162,7 @@ public class WorktimeServlet extends HttpServlet{
 			weekLastDays.add(weekLastDay);
         }
 		request.setAttribute("hours", hours);
+		request.setAttribute("holiday", holiday);
 		request.setAttribute("weekLastDays", weekLastDays);
 		request.setAttribute("worktimeList", worktimeList);
 	}

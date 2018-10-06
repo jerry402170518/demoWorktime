@@ -16,4 +16,6 @@ public interface WorktimeDetailDAO {
 
 	void submitWortkime(String empno, String weekFirstDay);
 
+	boolean checkHolidayOrNot(String currentDate);
+
 }

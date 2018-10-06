@@ -21,7 +21,7 @@ public class EmployeeServlet extends HttpServlet{
 	private static final String SEARCHEMPINFO_PAGE = "/WEB-INF/view/manager/mgrSearchEmpInfo.jsp";
 	private static final String MODIFY_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminModifyEmp.jsp";
 	private static final String ADD_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminAddEmp.jsp";
-
+	private static final String EMPLOYEE_PAGE = "empMain.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -63,7 +63,11 @@ public class EmployeeServlet extends HttpServlet{
 				addEmployee(request);
 				request.getRequestDispatcher(ADD_EMPLOYEE_PAGE).forward(request, response);
 				break;
-			
+			//轉交至員工主頁面
+			case "empMain_page":
+				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+				request.getRequestDispatcher(EMPLOYEE_PAGE).forward(request, response);
+				break;
 		}
 	}
 
