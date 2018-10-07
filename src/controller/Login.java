@@ -71,6 +71,7 @@ public class Login extends HttpServlet{
 					path=EMPLOYEE_PAGE;
 					break;
 				case "主管":
+					request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
 					path=MANAGER_PAGE;
 					break;
 				case "系統管理員":

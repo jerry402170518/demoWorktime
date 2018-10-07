@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,45 +52,6 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 				// TODO 自動產生的 catch 區塊
 				e.printStackTrace(System.err);
 			}
-	}
-	
-	@Override
-	public List<SubmissionHistory> getWorktime(String empno) {
-		// TODO Auto-generated method stub
-		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
-		
-		Calendar c = Calendar.getInstance();   // this takes current date
-	    c.set(Calendar.DAY_OF_MONTH, 1);
-	    SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM-dd");
-	    String firstDayOfMonth = sdfDate.format(c.getTime());
-	    
-	    SimpleDateFormat sdfDateEnd = new SimpleDateFormat("YYYY-MM");
-		String endDate = sdfDateEnd.format(c.getTime());
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append("select * from submission_history where empno = ?");
-			sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM-DD')");
-			sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1)" );
-			sql.append("order by week_first_day");
-			
-			conn = ConnectionHelper.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,empno);
-			pstmt.setString(2,firstDayOfMonth);
-			pstmt.setString(3,endDate);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				worktimeList.add(createWorktime(rs));
-			}
-				
-			
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		return worktimeList;
 	}
 
 	private SubmissionHistory createWorktime(ResultSet rs) {
@@ -519,7 +482,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE)");
+			sql.append("INSERT INTO SUBMISSION_HISTORY (EMPNO, WEEK_FIRST_DAY, STATUS, NOTE) ");
 			sql.append("VALUES (?, TO_DATE(?,'YYYY-MM-DD'), '未繳交', null)");
 			
 			conn = ConnectionHelper.getConnection();
@@ -540,6 +503,71 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		}finally {
 			close();
 		}
+	}
+
+	@Override
+	public List<Integer> getTotalCheck(String beginDate, String currentMonth) {
+		// TODO Auto-generated method stub
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("yyyy-MM");
+		List<Integer> totalCheck = new ArrayList<>();
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) from submission_history ");
+			sql.append("where week_first_day = TO_DATE( ? , 'YYYY-MM-DD') ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			LocalDate firstWeekDate = LocalDate.parse(beginDate);
+			
+			while(formatterMonth.format(firstWeekDate).equals(currentMonth)) {
+				pstmt.setString(1,formatterDate.format(firstWeekDate));
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					totalCheck.add(rs.getInt(1));
+				}
+				System.out.println(formatterDate.format(firstWeekDate));
+				firstWeekDate = firstWeekDate.plusDays(7);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return totalCheck;
+	}
+
+	@Override
+	public List<Integer> getTotalPass(String beginDate, String currentMonth) {
+		// TODO Auto-generated method stub
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("yyyy-MM");
+		List<Integer> totalCheck = new ArrayList<>();
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select count(*) from submission_history ");
+			sql.append("where week_first_day = TO_DATE( ? , 'YYYY-MM-DD') ");
+			sql.append("and status = '已通過'");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			LocalDate firstWeekDate = LocalDate.parse(beginDate);
+			while(formatterMonth.format(firstWeekDate).equals(currentMonth)) {
+				pstmt.setString(1,formatterDate.format(firstWeekDate));
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					totalCheck.add(rs.getInt(1));
+				}
+				System.out.println(formatterDate.format(firstWeekDate));
+				firstWeekDate = firstWeekDate.plusDays(7);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return totalCheck;
 	}
 
 }

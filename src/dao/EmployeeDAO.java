@@ -27,6 +27,8 @@ public interface EmployeeDAO {
 
 	void insertPassword(String empno, String password);
 
+	List<String> getNames(List<SubmissionHistory> worktimeList);
+
 	
 
 }

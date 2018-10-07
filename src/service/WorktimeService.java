@@ -20,12 +20,12 @@ public class WorktimeService {
 	
 	private WorktimeDAO wDao = new WorktimeDAOJDBC();
 	
-	public List<SubmissionHistory> getWorktimeInfo(String empno) {
-		// TODO Auto-generated method stub
-		//取得當月的日期
-	    
-		return wDao.getWorktime(empno);
-	}
+//	public List<SubmissionHistory> getWorktimeInfo(String empno) {
+//		// TODO Auto-generated method stub
+//		//取得當月的日期
+//	    
+//		return wDao.getWorktime(empno);
+//	}
 
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList) {
 		// TODO Auto-generated method stub
@@ -169,6 +169,36 @@ public class WorktimeService {
 		wDao.insertWorktime(empno, calBegin);
 	}
 	
+
+	public List<Integer> getTotalCheck() {
+		// TODO Auto-generated method stub
+		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM");
+	    Calendar c = Calendar.getInstance();
+	    c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+	    String currentMonth = sdfDate.format(c.getTime());
+	    System.out.println(sdfDate.format(c.getTime()));
+	    
+	    Map<String, String> betweenDate = new HashMap<>();
+		betweenDate = getbetweenDate(currentMonth);
+		String beginDate = betweenDate.get("beginDate");
+		return wDao.getTotalCheck(beginDate,currentMonth);
+	}
+
+
+	public List<Integer> getTotalPass() {
+		// TODO Auto-generated method stub
+		SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY-MM");
+	    Calendar c = Calendar.getInstance();
+	    c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+	    String currentMonth = sdfDate.format(c.getTime());
+	    System.out.println(sdfDate.format(c.getTime()));
+	    
+	    Map<String, String> betweenDate = new HashMap<>();
+		betweenDate = getbetweenDate(currentMonth);
+		String beginDate = betweenDate.get("beginDate");
+		return wDao.getTotalPass(beginDate,currentMonth);
+	}
+	
 	public Map<String, String> getbetweenDate(String currentMonth) {
 		String[] parts = currentMonth.split("-");
     	String year = parts[0]; 
@@ -194,6 +224,7 @@ public class WorktimeService {
 		return betweenDate;
 		
 	}
+
 
 
 

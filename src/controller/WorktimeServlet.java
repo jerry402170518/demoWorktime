@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.SubmissionHistory;
 import model.WorktimeDetail;
+import service.EmployeeService;
 import service.HolidayService;
 import service.WorktimeService;
 import model.NoSubmitWorktime;
@@ -29,6 +30,7 @@ public class WorktimeServlet extends HttpServlet{
 	
 	private WorktimeService worktimeService = new WorktimeService();
 	private HolidayService holidayService = new HolidayService();
+	private EmployeeService employeeService = new EmployeeService();
 	
 	private static final String WRITEWORKTIME_PAGE = "/WEB-INF/view/worktime/empWriteWorktime.jsp";
 	private static final String SEARCHWORKTIME_PAGE = "/WEB-INF/view/employee/empSearchWorktime.jsp";
@@ -45,7 +47,7 @@ public class WorktimeServlet extends HttpServlet{
 			request.getRequestDispatcher("Logout").forward(request, response);
 			return;
 		}
-		
+		System.out.println(action);
 		
 		switch(action){
 			//取得當月工時資訊
@@ -124,6 +126,9 @@ public class WorktimeServlet extends HttpServlet{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				break;
+			case "getMgrMainInfo":
+				getMgrMainInfo(request);
 				break;
 		}
 
@@ -233,6 +238,7 @@ public class WorktimeServlet extends HttpServlet{
 			return;
 		}
 		List<Integer> hours = worktimeService.getHours(worktimeList);
+		List<String> names = employeeService.getNames(worktimeList);
 		List<String> weekLastDays = new ArrayList<String>();
 
 		for(int i=0; i < worktimeList.size(); i++){
@@ -243,6 +249,9 @@ public class WorktimeServlet extends HttpServlet{
 			String weekLastDay = sdf.format(c.getTime());
 			weekLastDays.add(weekLastDay);
         }
+		
+		
+		request.setAttribute("names", names);
 		request.setAttribute("hours", hours);
 		request.setAttribute("weekLastDays", weekLastDays);
 		request.setAttribute("worktimeList", worktimeList);
@@ -286,6 +295,15 @@ public class WorktimeServlet extends HttpServlet{
 		List<Integer> lastweek = worktimeService.getlastWeekHours(empno);
 		request.setAttribute("days", days);
 		request.setAttribute("lastweek", lastweek);
+	}
+	
+	private void getMgrMainInfo(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		List<Integer> totalCheck = worktimeService.getTotalCheck();
+		List<Integer> totalPass = worktimeService.getTotalPass();
+		System.out.println("IM IN");
+		request.setAttribute("totalCheck", totalCheck);
+		request.setAttribute("totalPass", totalPass);
 	}
 
 

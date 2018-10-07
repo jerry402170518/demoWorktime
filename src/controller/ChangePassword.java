@@ -26,41 +26,55 @@ public class ChangePassword extends HttpServlet{
 		String path = EMPLOYEE_PAGE;
 		 Map<String,String> login = (Map)request.getSession().getAttribute("login");
 		 
-		 if(login.get("position") == "主管") {
+
+		 System.out.println(login.get("position"));
+		 if(login.get("position").equals("主管")) {
 			 path = MANAGER_PAGE;
+			 System.out.println(path);
 		 }
 		EmployeeService empService = new EmployeeService();
 		//更改密碼
 		String oldPwd = request.getParameter("oldPwd");
 		String newPwdFirst = request.getParameter("newPwdFirst");
 		String newPwdSecond = request.getParameter("newPwdSecond");
-		int countError =0 ;
 		if(!oldPwd.equals(login.get("password"))) {
-			countError++;
 			String oldPwdError = "輸入的舊密碼有誤!";
 			System.out.println(oldPwdError);
 			
 			request.setAttribute("oldPwdError", oldPwdError);
-			request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
-			request.getRequestDispatcher(path).forward(request, response);
+			if(login.get("position").equals("主管")) {
+				request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}else {
+				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}
 			return;
 		}
 		if(oldPwd.equals(newPwdFirst)) {
-			countError++;
 			String pwdTheSame = "輸入的新密碼與舊密碼不可相同!";
 			System.out.println(pwdTheSame);
 			request.setAttribute("pwdTheSame", pwdTheSame);
-			request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
-			request.getRequestDispatcher(path).forward(request, response);
+			if(login.get("position").equals("主管")) {
+				request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}else {
+				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}
 			return;
 		}
 		if(!newPwdFirst.equals(newPwdSecond)) {
-			countError++;
 			String doubleCheckError = "輸入的新密碼需相同!";
 			System.out.println(doubleCheckError);
 			request.setAttribute("doubleCheckError", doubleCheckError);
-			request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
-			request.getRequestDispatcher(path).forward(request, response);
+			if(login.get("position").equals("主管")) {
+				request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}else {
+				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}
 			return;
 		}else {
 			System.out.println("變更成功");
@@ -72,8 +86,14 @@ public class ChangePassword extends HttpServlet{
 			request.getSession().removeAttribute("login");
 			Map<String, String> loginNew = empService.getLoginInfo(empno);
 			request.getSession().setAttribute("login",loginNew);
-			request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
-			request.getRequestDispatcher(path).forward(request, response);
+			System.out.println(login.get("position"));
+			if(login.get("position").equals("主管")) {
+				request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}else {
+				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
+			}
 		}
 		
 	}

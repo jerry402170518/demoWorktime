@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
         html {
             font-size: 20px;
@@ -22,7 +24,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
-        <a class="navbar-brand" href="mgrMain.html">工時系統</a>
+        <a class="navbar-brand" href="#">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,7 +32,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="mgrMain.html">首頁
+                    <a class="nav-link" href="#">首頁
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -48,8 +50,8 @@
                 </li>
             </ul>
             <div class="btn-group mr-2">
-                <button type="button" class="btn btn-success">
-                    <i class="fas fa-user mr-2"></i>林彥儒</button>
+                <button type="button" class="btn btn-success" style="cursor:default">
+                    <i class="fas fa-user mr-2"></i>${sessionScope.login.name}</button>
                 <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
@@ -64,67 +66,18 @@
                     </button>
                 </div>
             </div>
-            <a href="login.html" class="btn btn-warning navBtn font-weight-bold mr-3">
+            <a href="Logout" class="btn btn-warning navBtn font-weight-bold mr-3">
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card rounded-0">
-                    <div class="card-body d-flex row justify-content-center align-items-center">
-                        <div class="text-center h2 w-100">
-                            <i class="fas fa-star h2 mr-2"></i>工時系統重要提醒
-                        </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時逾期未審核，違規記點一次。
-                        </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時審核經主管催繳，請主管務必記得再次審核。
-                        </div>
-                        <div class="text-warning font-weight-bold">
-                            <i class="fas fa-caret-right mr-2"></i>工時催繳最多催繳兩次，而後直接上報未確實繳交之員工。
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card  rounded-0 h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div>
-                            <i class="fas fa-check fa-3x"></i>
-                        </div>
-                        <div class="text-center w-100">
-                            <div class="h5">工時經催繳後提交</div>
-                            <div class="h3  text-success">13筆</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card  rounded-0 h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div>
-                            <i class="fas fa-times fa-3x"></i>
-                        </div>
-                        <div class="text-center w-100">
-                            <div class="h5">待審核</div>
-                            <div class="h3 text-danger">53筆</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
             <div class="row mt-4 mx-1">
-
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                         <div class="row no-gutters d-flex text-center">
-                                <div class="col-6"><a href="mgrCheckWorktime.html" class="badge badge-success rounded-0 btn-block"><i class="fas fa-user-check fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">審核工時</div></a></div>
-                                <div class="col-6"><a href="mgrCallWorktime.html" class="badge badge-warning rounded-0 btn-block"><i class="fas fa-bullhorn fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">催繳工時</div></a></div>
-                                <div class="col-6"><a href="mgrSearchWorktime.html" class="badge badge-warning rounded-0 btn-block"><i class="fas fa-user-clock fa-5x pt-4"><div class="h3 pt-2 pb-4 font-weight-bold">查詢員工工時</div></i></a></div>
-                                <div class="col-6"><a href="mgrSearchEmpInfo.html" class="badge badge-success rounded-0 btn-block"><i class="fas fa-search fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">查詢員工資料</div></a></div>
+                                <div class="col-6"><a href="Worktime?action=mgrCheckWorktime_page" class="badge badge-success rounded-0 btn-block"><i class="fas fa-user-check fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">審核工時</div></a></div>
+                                <div class="col-6"><a href="Worktime?action=mgrUrgeWorktime_page" class="badge badge-warning rounded-0 btn-block"><i class="fas fa-bullhorn fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">催繳工時</div></a></div>
+                                <div class="col-6"><a href="Worktime?action=mgrSearchWorktime_page" class="badge badge-warning rounded-0 btn-block"><i class="fas fa-user-clock fa-5x pt-4"><div class="h3 pt-2 pb-4 font-weight-bold">查詢員工工時</div></i></a></div>
+                                <div class="col-6"><a href="Employee?action=searchEmpInfo_page" class="badge badge-success rounded-0 btn-block"><i class="fas fa-search fa-5x pt-4"></i><div class="h3 pt-2 pb-4 font-weight-bold">查詢員工資料</div></a></div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -133,25 +86,8 @@
                                 本月工時審核筆數
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <canvas id="barCanvas" width="775" height="387" class="chartjs-render-monitor" style="display: block; "></canvas>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <h4 class="mt-4">
-                                            本月須審核筆數
-                                        </h4>
-                                        <p class="h3 mr-2" style="display: inline">280</p>
-                                        <small>筆</small>
-                                        <h4 class="mt-3">
-                                            本月已審核筆數
-                                        </h4>
-                                        <p class="h2" style="display: inline">
-                                            20
-                                        </p>
-                                        <small>筆</small>
-                                    </div>
-                                </div>
+                               <canvas id="barCanvas" width="775" height="387" class="chartjs-render-monitor" style="display: block; "></canvas>
+                                    
                             </div>
                         </div>
                     </div>
@@ -159,10 +95,10 @@
     </div>
     
 
-    <footer class="bg-secondary text-white text-center py-2 my-4">
+    <footer class="bg-secondary text-white text-center fixed-bottom">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
-    <!-- personal Modal-->
+  <!-- personal Modal-->
     <div class="modal fade" id="personInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -173,23 +109,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body px-0 py-0">
+                <div class="modal-body p-0">
                     <table class="table text-center">
                         <tr>
                             <td>員工編號</td>
-                            <td> 00000000</td>
+                            <td>${sessionScope.login.empno}</td>
                         </tr>
                         <tr>
                             <td>姓名</td>
-                            <td> 林彥儒</td>
+                            <td>${sessionScope.login.name}</td>
                         </tr>
                         <tr>
                             <td>email</td>
-                            <td>yanru4021470518@gamil.com</td>
+                            <td>${sessionScope.login.email}</td>
                         </tr>
                         <tr>
                             <td>職位</td>
-                            <td>員工</td>
+                            <td>${sessionScope.login.position}</td>
                         </tr>
                     </table>
                 </div>
@@ -199,14 +135,7 @@
             </div>
         </div>
     </div>
-    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-            <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-        </div>
-        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-        </div>
-    </div>
+
     <!-- changePwd Modal -->
     <div class="modal fade" id="changePwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -219,28 +148,44 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form" role="form">
+                    <form class="form" id="formChange" action="changePassword" method="post">
                         <div class="form-group">
                             <label>請輸入舊密碼</label>
-                            <input name="old_pw" id="old_pw" class="form-control old-pw" type="password">
-                            <span class="error-msg" style="color: red"></span>
+                            <input name="oldPwd" id="oldPwd" class="form-control old-pw" type="password">
+	                         <c:if test="${not empty oldPwdError}">
+							 	<script>
+						 		 	swal ( "${oldPwdError}" ,  "請輸入正確的舊密碼!" ,  "error" )
+								</script>
+							 </c:if>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label>請輸入新密碼</label>
-                            <input id="user-pwd-input" name="user-pwd-input" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
+                            <input id="newPwdFirst" name="newPwdFirst" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
                             />
-                            <span class="error-msg" style="color: red"></span>
+                            <c:if test="${not empty pwdTheSame}">
+							    <script>
+							   		 swal ( "${pwdTheSame}" ,  "請輸入不一樣的新密碼!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
                         <div class="form-group">
                             <label>請再次輸入新密碼</label>
-                            <input placeholder="再次新確認密碼" class="form-control new-pw" type="password" name="user_pwd_again" />
-                            <span class="error-msg" style="color: red"></span>
+                            <input placeholder="再次新確認密碼" class="form-control new-pw" type="password" name="newPwdSecond" />
+                            <c:if test="${not empty doubleCheckError}">
+							    <script>
+							   		 swal ( "${doubleCheckError}" ,  "請確認輸入的兩欄新密碼是否相同!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
-
+						<c:if test="${not empty changeSuccess}">
+							    <script>
+							   		 swal ( "${changeSuccess}","請記住新密碼", "success" )
+							    </script>
+						</c:if>
                         <div class="modal-footer pr-0">
-                            <button type="button" class="btn btn-success">確定變更</button>
+                            <button type="submit" class="btn btn-success">確定變更</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-
                         </div>
                     </form>
                 </div>
@@ -251,8 +196,8 @@
         window.chartColors = {
             red: 'rgb(255, 99, 132)',
             orange: 'rgb(255, 159, 64)',
-            yellow: 'rgb(255, 205, 86)',
-            green: 'rgb(75, 192, 192)',
+            yellow: 'rgb(255, 190, 38)',
+            green: 'rgb(70, 183, 53)',
             blue: 'rgb(54, 162, 235)',
             purple: 'rgb(153, 102, 255)',
             grey: 'rgb(201, 203, 207)'
@@ -267,27 +212,27 @@
             labels: ["第一周", "第二周", "第三周", "第四周", "第五周"],
             datasets: [{
                 label: '此周需審核筆數',
-                backgroundColor: colors(window.chartColors.red).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.red,
+                backgroundColor: colors(window.chartColors.green).alpha(0.8).rgbString(),
+                borderColor: window.chartColors.green,
                 borderWidth: 1,
                 data: [
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
+                    ${requestScope.totalCheck[0]},
+                    ${requestScope.totalCheck[1]},
+                    ${requestScope.totalCheck[2]},
+                    ${requestScope.totalCheck[3]},
+                    ${requestScope.totalCheck[4]},
                 ]
             }, {
-                label: '此周已審核筆數',
-                backgroundColor: colors(window.chartColors.blue).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.blue,
+                label: '此周已通過筆數',
+                backgroundColor: colors(window.chartColors.yellow).alpha(0.8).rgbString(),
+                borderColor: window.chartColors.yellow,
                 borderWidth: 1,
                 data: [
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
-                    randomScalingFactor(),
+                	${requestScope.totalPass[0]},
+                	${requestScope.totalPass[1]},
+                	${requestScope.totalPass[2]},
+                	${requestScope.totalPass[3]},
+                	${requestScope.totalPass[4]},
                 ]
             }]
 
@@ -308,7 +253,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Bar Chart'
+                        text: '單位/筆'
                     }
                 }
             });

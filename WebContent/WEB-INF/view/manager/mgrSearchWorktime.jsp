@@ -35,7 +35,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
-        <a class="navbar-brand" href="mgrMain.html">工時系統</a>
+        <a class="navbar-brand" href="Employee?action=mgrMain_page">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,26 +43,26 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="mgrMain.html">首頁
+                    <a class="nav-link" href="Employee?action=mgrMain_page">首頁
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCheckWorktime.html">審核工時</a>
+                    <a class="nav-link" href="Worktime?action=mgrCheckWorktime_page">審核工時</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrCallWorktime.html">催繳工時</a>
+                    <a class="nav-link" href="Worktime?action=mgrUrgeWorktime_page">催繳工時</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">查詢員工工時</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="mgrSearchEmpInfo.html">查詢員工資料</a>
+                    <a class="nav-link" href="Employee?action=searchEmpInfo_page">查詢員工資料</a>
                 </li>
             </ul>
             <div class="btn-group mr-2">
-                <button type="button" class="btn btn-success">
-                    <i class="fas fa-user mr-2"></i>林彥儒</button>
+                <button type="button" class="btn btn-success" style="cursor:default">
+                    <i class="fas fa-user mr-2"></i>${sessionScope.login.name}</button>
                 <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
@@ -77,7 +77,7 @@
                     </button>
                 </div>
             </div>
-            <a href="login.html" class="btn btn-warning navBtn font-weight-bold mr-3">
+            <a href="Logout" class="btn btn-warning navBtn font-weight-bold mr-3">
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
@@ -114,6 +114,7 @@
                 <table class="table table-bordered mb-0 table-hover text-center">
                 <thead class="thead-dark">
                     <tr>
+                    	<th>姓名</th>
                         <th>日期</th>
                         <th>狀態</th>
                         <th>星期日</th>
@@ -123,13 +124,14 @@
                         <th>星期四</th>
                         <th>星期五</th>
                         <th>星期六</th>
-                        <th>詳細!!</th>
+                        <th>詳細</th>
                     </tr>
                 </thead>
                 <tbody>
                 	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
                 		
                 		<tr>
+                		   <td><c:out value="${requestScope.names[loop.index]}"/></td>
                 		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
 	                 	   <td><c:out value="${worktime.status}" /></td>
 	                 	    <% for(int i = 0; i < 7; i++) { 
@@ -169,7 +171,7 @@
             </div>
         </div>
     </div>
-    <footer class="bg-secondary text-white text-center py-2 my-4">
+    <footer class="bg-secondary text-white text-center fixed-bottom">
         工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
 
@@ -185,23 +187,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body px-0 py-0">
+                <div class="modal-body p-0">
                     <table class="table text-center">
                         <tr>
                             <td>員工編號</td>
-                            <td> 00000000</td>
+                            <td>${sessionScope.login.empno}</td>
                         </tr>
                         <tr>
                             <td>姓名</td>
-                            <td> 林彥儒</td>
+                            <td>${sessionScope.login.name}</td>
                         </tr>
                         <tr>
                             <td>email</td>
-                            <td>yanru4021470518@gamil.com</td>
+                            <td>${sessionScope.login.email}</td>
                         </tr>
                         <tr>
                             <td>職位</td>
-                            <td>員工</td>
+                            <td>${sessionScope.login.position}</td>
                         </tr>
                     </table>
                 </div>
@@ -224,28 +226,44 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form" role="form">
+                    <form class="form" id="formChange" action="changePassword" method="post">
                         <div class="form-group">
                             <label>請輸入舊密碼</label>
-                            <input name="old_pw" id="old_pw" class="form-control old-pw" type="password">
-                            <span class="error-msg" style="color: red"></span>
+                            <input name="oldPwd" id="oldPwd" class="form-control old-pw" type="password">
+	                         <c:if test="${not empty oldPwdError}">
+							 	<script>
+						 		 	swal ( "${oldPwdError}" ,  "請輸入正確的舊密碼!" ,  "error" )
+								</script>
+							 </c:if>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label>請輸入新密碼</label>
-                            <input id="user-pwd-input" name="user-pwd-input" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
+                            <input id="newPwdFirst" name="newPwdFirst" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
                             />
-                            <span class="error-msg" style="color: red"></span>
+                            <c:if test="${not empty pwdTheSame}">
+							    <script>
+							   		 swal ( "${pwdTheSame}" ,  "請輸入不一樣的新密碼!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
                         <div class="form-group">
                             <label>請再次輸入新密碼</label>
-                            <input placeholder="再次新確認密碼" class="form-control new-pw" type="password" name="user_pwd_again" />
-                            <span class="error-msg" style="color: red"></span>
+                            <input placeholder="再次新確認密碼" class="form-control new-pw" type="password" name="newPwdSecond" />
+                            <c:if test="${not empty doubleCheckError}">
+							    <script>
+							   		 swal ( "${doubleCheckError}" ,  "請確認輸入的兩欄新密碼是否相同!" ,  "error" )
+							    </script>
+							</c:if>
                         </div>
-
+						<c:if test="${not empty changeSuccess}">
+							    <script>
+							   		 swal ( "${changeSuccess}","請記住新密碼", "success" )
+							    </script>
+						</c:if>
                         <div class="modal-footer pr-0">
-                            <button type="button" class="btn btn-success">確定變更</button>
+                            <button type="submit" class="btn btn-success">確定變更</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-
                         </div>
                     </form>
                 </div>

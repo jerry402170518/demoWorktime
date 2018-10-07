@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Employee;
 import model.SubmissionHistory;
 import service.EmployeeService;
+import service.WorktimeService;
 
 public class EmployeeServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -22,6 +23,7 @@ public class EmployeeServlet extends HttpServlet{
 	private static final String MODIFY_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminModifyEmp.jsp";
 	private static final String ADD_EMPLOYEE_PAGE = "/WEB-INF/view/admin/adminAddEmp.jsp";
 	private static final String EMPLOYEE_PAGE = "empMain.jsp";
+	private static final String MANAGER_PAGE = "mgrMain.jsp";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -67,6 +69,11 @@ public class EmployeeServlet extends HttpServlet{
 			case "empMain_page":
 				request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
 				request.getRequestDispatcher(EMPLOYEE_PAGE).forward(request, response);
+				break;
+			//轉交至主管主頁面
+			case "mgrMain_page":
+				request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+				request.getRequestDispatcher(MANAGER_PAGE).forward(request, response);
 				break;
 		}
 	}

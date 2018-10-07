@@ -12,7 +12,7 @@ import model.WorktimeDetail;
 
 public interface WorktimeDAO {
 	
-	public List<SubmissionHistory> getWorktime(String empno);
+//	public List<SubmissionHistory> getWorktime(String empno);
 
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList);
 
@@ -39,5 +39,9 @@ public interface WorktimeDAO {
 	public List<SubmissionHistory> getWorktimeInfo(String empno, String beginDate, String endDate);
 
 	public void insertWorktime(String empno, Calendar calBegin);
+
+	public List<Integer> getTotalCheck(String beginDate, String currentMonth);
+
+	public List<Integer> getTotalPass(String beginDate, String currentMonth);
 
 }

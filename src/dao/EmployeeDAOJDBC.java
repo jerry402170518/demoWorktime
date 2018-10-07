@@ -316,5 +316,32 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 		}
 	}
 
+	@Override
+	public List<String> getNames(List<SubmissionHistory> worktimeList) {
+		// TODO Auto-generated method stub
+		List<String> names = new ArrayList<>();
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select name from employee ");
+			sql.append("where empno = ? ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			for(int i = 0; i < worktimeList.size(); i++) {
+				pstmt.setString(1, worktimeList.get(i).getEmpNo());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					names.add(rs.getString(1));
+				}
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return names;
+	}
+
 	
 }

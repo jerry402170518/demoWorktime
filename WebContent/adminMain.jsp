@@ -80,7 +80,7 @@
                 </a>
             </div>
             <div class="col-6">
-                <a href="egrHoliday.html" class="badge badge-primary rounded-0 btn-block">
+                <a href="egrHoliday.html" class="badge badge-success rounded-0 btn-block">
                     <i class="fas fa-calendar-alt fa-5x pt-4"></i>
                     <div class="h3 pt-2 pb-4 font-weight-bold">假日維護</div>
                 </a>

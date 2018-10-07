@@ -189,6 +189,10 @@ public class EmployeeService {
 	        }
 	        return "";
 	    }
+	public List<String> getNames(List<SubmissionHistory> worktimeList) {
+		// TODO Auto-generated method stub
+		return empDAO.getNames(worktimeList);
+	}
 	
 	
 	
