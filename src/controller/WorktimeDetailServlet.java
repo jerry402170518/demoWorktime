@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,6 +128,12 @@ public class WorktimeDetailServlet extends HttpServlet{
 	    	LocalDate localDateWeekLastDay = localDateWeekFirstDay.plusDays(6);
 	    	LocalDate mid = LocalDate.parse(currentDate); 
 	    	
+	    	Map<String, String> employeeInput = new HashMap<>();
+	    	employeeInput.put("currentDate", currentDate);
+	    	employeeInput.put("project", project);
+	    	employeeInput.put("workNote", workNote);
+	    	employeeInput.put("hours", hours);
+    		request.getSession().setAttribute("employeeInput", employeeInput);
 	    	
 	    	if(!mid.isAfter(localDateWeekLastDay) && !mid.isBefore(localDateWeekFirstDay)) {
 	    		if(!worktimeDetailService.checkHolidayOrNot(currentDate)) {
@@ -134,6 +141,7 @@ public class WorktimeDetailServlet extends HttpServlet{
 	    		}else {
 	    			String errorMsg = "你輸入的日期為放假日，請重新確認所填寫的日期";
 		    		request.setAttribute("errorMsg", errorMsg);
+		    		
 		    		return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
 	    		}
 	    	}else {
@@ -144,6 +152,7 @@ public class WorktimeDetailServlet extends HttpServlet{
 			
 			System.out.println(weekFirstDay);
 			System.out.println("新增成功");
+			request.getSession().removeAttribute("employeeInput");
 			return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
 		}
 		

@@ -116,17 +116,17 @@
                             <form method="post">
                             	<input type="hidden" name="weekFirstDay" value="${requestScope.weekFirstDay}">
                                 <td class="align-middle">
-                                    <input type="date" class="form-control" name="currentDate">
+                                    <input type="date" class="form-control" name="currentDate" value="${sessionScope.employeeInput['currentDate']}">
                                 </td>
                                 <td class="align-middle">
-                                    <input type="text" class="form-control" name="project">
+                                    <input type="text" class="form-control" name="project" value="${sessionScope.employeeInput['project']}">
                                 </td>
                                 <td>
-                                    <textarea name="workNote" id="" cols="40" rows="3" class="form-control"></textarea>
+                                    <textarea name="workNote" id="" cols="40" rows="3" class="form-control">${sessionScope.employeeInput['workNote']}</textarea>
                                 </td>
                                 <td class="align-middle">
                                     
-                                    <input type="number" max="24" min="1" class="form-control mt-1" name ="hours" required>
+                                    <input type="number" max="12" min="1" class="form-control mt-1" name ="hours" value="${sessionScope.employeeInput['hours']}" required>
                                     
                                 </td>
                                 <td class="align-middle text-center">
