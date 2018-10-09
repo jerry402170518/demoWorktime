@@ -19,7 +19,9 @@
 <body>
     <div class="container-fluid">
         <!--  -->
+        <c:if test="${not empty sessionScope.login}">
         
+        </c:if>
         <div class="row justify-content-center">
             <div class="col-12   topBlank"></div>
             <div class="col-1"></div>

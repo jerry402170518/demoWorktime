@@ -105,43 +105,6 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		return hours;
 	}
 
-	@Override
-	public List<SubmissionHistory> getWorktime(String empno, String searchMonth) {
-		// TODO Auto-generated method stub
-		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
-	    
-		try {
-			
-			StringBuilder sql = new StringBuilder();
-			sql.append("select * from submission_history ");
-			sql.append("where week_first_day >= TO_DATE(?,'YYYY-MM') ");
-			sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
-			if(empno != null) {
-				sql.append("and empno = ? ");
-			}
-			sql.append("order by week_first_day");
-			
-			conn = ConnectionHelper.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-
-			pstmt.setString(1,searchMonth);
-			pstmt.setString(2,searchMonth);
-			if(empno != null) {
-				pstmt.setString(3,empno);
-			}
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				worktimeList.add(createWorktime(rs));
-			}	
-			
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		return worktimeList;
-	}
 
 	@Override
 	public boolean checkCurrentMonth(String empno) {
@@ -568,6 +531,41 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			close();
 		}
 		return totalCheck;
+	}
+
+	@Override
+	public List<SubmissionHistory> getPassWorktime(String empno, String beginDate, String endDate) {
+		// TODO Auto-generated method stub
+		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from submission_history ");
+			sql.append("where week_first_day ");
+			sql.append("between TO_DATE( ? ,'YYYY-MM-DD') " );
+			sql.append("and TO_DATE( ? ,'YYYY-MM-DD') ");
+			sql.append("and empno = ? ");
+			sql.append("and status = '已通過'");
+			sql.append("order by week_first_day ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,beginDate);
+			pstmt.setString(2,endDate);
+			pstmt.setString(3,empno);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				worktimeList.add(createWorktime(rs));
+			}
+				
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return worktimeList;
 	}
 
 }

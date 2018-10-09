@@ -193,6 +193,10 @@ public class EmployeeService {
 		// TODO Auto-generated method stub
 		return empDAO.getNames(worktimeList);
 	}
+	public List<Employee> getAllEmpInfo() {
+		// TODO Auto-generated method stub
+		return empDAO.getAllEmpInfo();
+	}
 	
 	
 	

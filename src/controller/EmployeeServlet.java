@@ -37,8 +37,13 @@ public class EmployeeServlet extends HttpServlet{
 		System.out.println(action);
 		
 		switch(action){
-			//轉交至搜尋員工個人資料頁面
+			//搜尋員工個人資料頁面
 			case "searchEmpInfo_page":
+				getAllempInfo(request);
+				request.getRequestDispatcher(SEARCHEMPINFO_PAGE).forward(request, response);
+				break;
+			//轉交至搜尋員工個人資料頁面
+			case "searchEmpInfo":
 				doGetEmpInfo(request);
 				request.getRequestDispatcher(SEARCHEMPINFO_PAGE).forward(request, response);
 				break;
@@ -126,6 +131,15 @@ public class EmployeeServlet extends HttpServlet{
 		employeeService.addEmp(name, email, position, idNumber);
 	}
 	
+
+
+	private void getAllempInfo(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList = employeeService.getAllEmpInfo();
+		System.out.println(employeeList);
+		request.setAttribute("employeeList", employeeList);
+	}
 
 
 }

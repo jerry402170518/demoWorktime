@@ -20,21 +20,9 @@ public class WorktimeService {
 	
 	private WorktimeDAO wDao = new WorktimeDAOJDBC();
 	
-//	public List<SubmissionHistory> getWorktimeInfo(String empno) {
-//		// TODO Auto-generated method stub
-//		//取得當月的日期
-//	    
-//		return wDao.getWorktime(empno);
-//	}
-
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList) {
 		// TODO Auto-generated method stub
 		return wDao.getHours(worktimeList);
-	}
-
-	public List<SubmissionHistory> getWorktime(String empno, String searchMonth) {
-		// TODO Auto-generated method stub
-		return wDao.getWorktime(empno,searchMonth);
 	}
 
 	public boolean checkCurrentMonth(String empno) {

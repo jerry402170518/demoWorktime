@@ -163,10 +163,7 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement("SELECT * FROM EMPLOYEE WHERE NAME = ?");
 			pstmt.setString(1,inputSearch);
-
-			System.out.println("DDD");
 			rs = pstmt.executeQuery();
-			System.out.println("CCC");
 			if(rs.next()) {
 				employeeList.add(createEmployeeInfo(rs));
 			}
@@ -341,6 +338,28 @@ public class EmployeeDAOJDBC implements EmployeeDAO{
 			close();
 		}
 		return names;
+	}
+
+	@Override
+	public List<Employee> getAllEmpInfo() {
+		// TODO Auto-generated method stub
+		List<Employee> employeeList = new ArrayList<>();
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * from employee ");
+			
+			conn = ConnectionHelper.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				employeeList.add(createEmployeeInfo(rs));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return employeeList;
 	}
 
 	

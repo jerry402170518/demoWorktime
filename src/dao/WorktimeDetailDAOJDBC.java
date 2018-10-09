@@ -12,46 +12,14 @@ import model.SubmissionHistory;
 import model.WorktimeDetail;
 
 public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
-	Connection conn = null;
-	ResultSet rs = null;
-	Statement stmt = null;
-	PreparedStatement pstmt = null;
-	
-	private void close() {
-		if (rs != null)
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				// TODO 自動產生的 catch 區塊
-				e.printStackTrace(System.err);
-			}
-		if (stmt != null)
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				// TODO 自動產生的 catch 區塊
-				e.printStackTrace(System.err);
-			}
-		if (pstmt != null)
-			try {
-				pstmt.close();
-			} catch (SQLException e) {
-				// TODO 自動產生的 catch 區塊
-				e.printStackTrace(System.err);
-			}
-		if (conn != null)
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO 自動產生的 catch 區塊
-				e.printStackTrace(System.err);
-			}
-	}
 	
 	@Override
 	public void insertWorktime(String empno, String currentDate, String project, String workNote, String hours) {
 		// TODO Auto-generated method stub
-		
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("insert into working_records(empno,working_date,project_no,hours,note)");
@@ -69,13 +37,44 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
 	}
 
 	@Override
 	public void deleteWorktime(String empno, String currentDate, String project) {
 		// TODO Auto-generated method stub
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("delete from working_records ");
@@ -93,13 +92,44 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
 	}
 
 	@Override
 	public List<WorktimeDetail> getWorktimeDetailInfo(String empno, String weekFirstDay) {
 		// TODO Auto-generated method stub
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		List<WorktimeDetail> worktimeDetailList = new ArrayList<>();
 		
 		
@@ -117,14 +147,41 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 			pstmt.setString(2,weekFirstDay);
 			pstmt.setString(3,weekFirstDay);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				worktimeDetailList.add(createWorktimeDetail(rs));
 			}
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
 		
 		return worktimeDetailList;
@@ -149,6 +206,11 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 	@Override
 	public List<WorktimeDetail> mgrGetWorktimeDetailInfo(String weekFirstDay) {
 		// TODO Auto-generated method stub
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		System.out.println("mgrGetWorktimeDetailInfo start");
 		List<WorktimeDetail> worktimeDetailList = new ArrayList<>();
 		
 		
@@ -156,7 +218,7 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 			StringBuilder sql = new StringBuilder();
 			sql.append("select * from working_records ");
 			sql.append("where working_date between TO_DATE(?,'YYYY-MM-DD') ");
-			sql.append("and TO_DATE(?,'YYYY-MM-DD')+6");
+			sql.append("and TO_DATE(?,'YYYY-MM-DD')+6 ");
 			sql.append("order by working_date");
 
 			conn = ConnectionHelper.getConnection();
@@ -164,22 +226,53 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 			pstmt.setString(1,weekFirstDay);
 			pstmt.setString(2,weekFirstDay);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			if(rs.next()){
 				worktimeDetailList.add(createWorktimeDetail(rs));
 			}
 			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
-		
+		System.out.println("mgrGetWorktimeDetailInfo end");
 		return worktimeDetailList;
 	}
 
 	@Override
 	public void submitWortkime(String empno, String weekFirstDay) {
 		// TODO Auto-generated method stub
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("update submission_history ");
@@ -196,13 +289,44 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
 	}
 
 	@Override
 	public boolean checkHolidayOrNot(String currentDate) {
 		// TODO Auto-generated method stub
+		Connection conn = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select count(*) from holidays ");
@@ -221,7 +345,34 @@ public class WorktimeDetailDAOJDBC implements WorktimeDetailDAO{
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
-			close();
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動產生的 catch 區塊
+					e.printStackTrace(System.err);
+				}
 		}
 		return false;
 	}

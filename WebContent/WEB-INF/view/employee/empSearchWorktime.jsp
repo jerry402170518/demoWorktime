@@ -82,10 +82,10 @@
                     <form action="Worktime?action=searchWorktime" method="post">
                         <div class="form-row">
                             <p class="col mt-1 mr-2 text-right font-weight-bold">
-                       		         請輸入月份:
+                       		         請輸入日期:
                             </p>
                             <div class="col">
-                                <input type="month" name="searchMonth" class="form-control" placeholder="範例格式:2018-09")>
+                                <input type="text" name="currentMonth" class="form-control" placeholder="範例格式:2018-09")>
                             </div>
                             <div class="col">
                                 <input type="submit" class="btn btn-success">
@@ -107,19 +107,22 @@
                         <th>星期四</th>
                         <th>星期五</th>
                         <th>星期六</th>
-                        <th>詳細!!</th>
+                        <th>詳細</th>
                     </tr>
                 </thead>
                 <tbody>
                 	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
-                		
+                		<c:if test="${worktime.status == '已通過' }">	
                 		<tr>
                 		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
 	                 	   <td><c:out value="${worktime.status}" /></td>
 	                 	    <% for(int i = 0; i < 7; i++) { 
 	                 	    	pageContext.setAttribute("i", i);
 	                		%>
-					            <td>${requestScope.hours[7*loop.index+i]}</td>
+	                			<td>
+					            	<c:if test="${requestScope.holiday[7*loop.index+i] == null or requestScope.holiday[7*loop.index+i] != null && requestScope.hours[7*loop.index+i]>0}"><span>${requestScope.hours[7*loop.index+i]}</span></c:if>
+					            	<span class="text-danger" style="display:block">${requestScope.holiday[7*loop.index+i]}</span>
+					            </td>
 					        <% } %>
 	                       <td>
 	                       		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#worktimeDetailModal${loop.index}">
@@ -146,6 +149,7 @@
 					            </div>
 					        </div>
 	                 	</tr>
+	                 	</c:if>
                 	</c:forEach>
 	                
                 </tbody>

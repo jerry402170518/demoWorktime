@@ -75,7 +75,7 @@
                 查詢員工資料
             </div>
             <div class="card-body">
-                <form action="Employee?action=searchEmpInfo_page" method="post" class="form-inline row justify-content-center">
+                <form action="Employee?action=searchEmpInfo" method="post" class="form-inline row justify-content-center">
                     <div class="form-group pr-0">
                         <label for="exampleFormControlSelect1">依照</label>
                         <select name="nameOrEmpno" class="form-control ml-2" id="exampleFormControlSelect1">

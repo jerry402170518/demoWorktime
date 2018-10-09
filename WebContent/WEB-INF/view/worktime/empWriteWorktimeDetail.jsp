@@ -67,6 +67,7 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
+    
     <div class="container-fluid">
         <div class="card rounded-0 mt-2 text-center">
             <div class="card-header font-weight-bold">

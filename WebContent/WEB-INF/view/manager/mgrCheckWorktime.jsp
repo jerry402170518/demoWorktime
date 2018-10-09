@@ -164,10 +164,12 @@
 						                		<input type="hidden" name="submssionId" value="${worktime.id}">
 							                	<textarea name="noPassReason" id="" cols="40" rows="3" placeholder="未通過請填寫原因，再點選未通過" required></textarea>
 							                    <button type="submit" formaction="Worktime?action=worktimeCheckNoPass" class="btn btn-danger mr-auto">未通過</button>
+						                	</form>
+						                    <form method="post">
+						                    	<input type="hidden" name="submssionId" value="${worktime.id}">
 							                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
 							                    <button type="submit" formaction="Worktime?action=worktimeCheckPass" class="btn btn-primary">通過</button>
-						                	</form>
-						                    
+						                    </form>
 						                </div>
 						            </div>
 						        </div>
@@ -248,7 +250,7 @@
                         </div>
                         <div class="form-group">
                             <label>請輸入新密碼</label>
-                            <input id="newPwdFirst" name="newPwdFirst" type="password" placeholder="請輸入不得為空且少於8位的數字與英文組合" class="new-pw form-control"
+                            <input id="newPwdFirst" name="newPwdFirst" type="password" placeholder="" class="new-pw form-control"
                             />
                             <c:if test="${not empty pwdTheSame}">
 							    <script>

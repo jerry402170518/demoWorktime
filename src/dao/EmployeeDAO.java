@@ -29,6 +29,8 @@ public interface EmployeeDAO {
 
 	List<String> getNames(List<SubmissionHistory> worktimeList);
 
+	List<Employee> getAllEmpInfo();
+
 	
 
 }

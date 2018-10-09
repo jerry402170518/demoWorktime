@@ -66,12 +66,17 @@ public class WorktimeServlet extends HttpServlet{
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-			}
+				}
 				request.getRequestDispatcher(WRITEWORKTIME_PAGE).forward(request, response);
 				break;
 			//查詢工時
 			case "searchWorktime":
-				doGetPassWorktime(request);
+				try {
+					doGetEmpWorktime(request);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				request.getRequestDispatcher(SEARCHWORKTIME_PAGE).forward(request, response);
 				break;
 			//轉交至員工查詢工時頁面
@@ -147,6 +152,8 @@ public class WorktimeServlet extends HttpServlet{
 		String empno = loginInfo.get("empno");
 		String name = loginInfo.get("name");
 		String currentMonth = request.getParameter("currentMonth");
+		//alert
+		String submitSuccess = request.getParameter("submitSuccess");
 
 		List<String> weekLastDays = new ArrayList<String>();
 		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
@@ -166,45 +173,17 @@ public class WorktimeServlet extends HttpServlet{
 			String weekLastDay = sdf.format(c.getTime());
 			weekLastDays.add(weekLastDay);
         }
+		
+		if(submitSuccess != null) {
+			System.out.println(submitSuccess);
+			submitSuccess = "提交成功!";
+			request.setAttribute("submitSuccess", submitSuccess);
+		}
 		request.setAttribute("hours", hours);
 		request.setAttribute("holiday", holiday);
 		request.setAttribute("weekLastDays", weekLastDays);
 		request.setAttribute("worktimeList", worktimeList);
 	}
-	
-
-
-	private void doGetPassWorktime(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		Map<String, String> loginInfo = (Map<String, String>) request.getSession().getAttribute("login");
-		String empno = loginInfo.get("empno");
-		String searchMonth  = request.getParameter("searchMonth");
-		System.out.println(searchMonth);
-		
-		if(searchMonth == null) {
-			return;
-		}
-		List<SubmissionHistory> worktimeList = worktimeService.getWorktime(empno,searchMonth);
-		if(worktimeList.size() == 0) {
-			return;
-		}
-		List<Integer> hours = worktimeService.getHours(worktimeList);
-		List<String> weekLastDays = new ArrayList<String>();
-
-		for(int i=0; i < worktimeList.size(); i++){
-			Calendar c = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			c.setTime(worktimeList.get(i).getWeekFirstDay());
-			c.add(Calendar.DAY_OF_MONTH, 6);
-			String weekLastDay = sdf.format(c.getTime());
-			weekLastDays.add(weekLastDay);
-        }
-		request.setAttribute("hours", hours);
-		request.setAttribute("weekLastDays", weekLastDays);
-		request.setAttribute("worktimeList", worktimeList);
-	}
-	
-
 
 	private void doSearchEmpWorktime(HttpServletRequest request) {
 		// TODO Auto-generated method stub
@@ -225,7 +204,7 @@ public class WorktimeServlet extends HttpServlet{
 		if(!inputMonth.isEmpty() && inputSearch.isEmpty()) {
 			String empno = null;
 			System.out.println("只輸入月份");
-			worktimeList = worktimeService.getWorktime(empno, inputMonth);
+			worktimeList = worktimeService.getWorktimeInfo(empno, inputMonth);
 		}
 		//姓名與員編都輸入
 		if(!inputMonth.isEmpty() && !inputSearch.isEmpty()) {
@@ -275,6 +254,7 @@ public class WorktimeServlet extends HttpServlet{
 	private void checkPass(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		String submssionId = request.getParameter("submssionId");
+		System.out.println(submssionId);
 		worktimeService.checkPass(submssionId);
 	}
 

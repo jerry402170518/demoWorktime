@@ -26,6 +26,11 @@
 </head>
 
 <body>
+	<c:if test="${not empty submitSuccess}">
+		<script>
+	  	 swal ( "${submitSuccess}" ,  " " ,  "success" )
+		  </script>
+	</c:if>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
         <a class="navbar-brand" href="Employee?action=empMain_page">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
@@ -107,7 +112,7 @@
                 <tbody>
                 
                 	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
-                		
+                		<c:if test="${worktime.status != '已通過' }">
                 		<tr>
                 		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
 	                 	   <td><c:out value="${worktime.status}" /></td>
@@ -133,12 +138,13 @@
 							    </c:otherwise>
 							</c:choose>
 	                       </td>
-	                 	</tr>
-	                 	<c:if test="${worktime.status=='未通過'}">
-	                 		<tr>
-	                 			<td>未通過原因</td>
-	                 			<td colspan="10" class="text-danger font-weight-bold"><c:out value="${worktime.note}"/></td>
-	                 		</tr>
+		                 	</tr>
+		                 	<c:if test="${worktime.status=='未通過'}">
+		                 		<tr>
+		                 			<td>未通過原因</td>
+		                 			<td colspan="10" class="text-danger font-weight-bold"><c:out value="${worktime.note}"/></td>
+		                 		</tr>
+		                 	</c:if>
 	                 	</c:if>
                 	</c:forEach>
 	                
@@ -148,7 +154,7 @@
 
     </div>
     
-    <footer class="bg-secondary text-white text-center py-2" >
+    <footer class="bg-secondary text-white text-center fixed-bottom" >
             工時系統 Copyright © 2018 YanRu Lin All rights reserved
     </footer>
      <!-- personal Modal-->

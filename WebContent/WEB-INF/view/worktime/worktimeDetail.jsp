@@ -54,8 +54,14 @@
 	                                <td class="align-middle">
 	                                    <c:out value="${worktimeDetail.hours}"/>
 	                                </td>
-                    			</tr>
-                    		</c:forEach>
+                    			</tr>  
+	                             <c:if test="${not empty note}">
+	                                <tr class="font-weight-bold text-danger">
+	                                	<td>未通過原因</td>
+	                                	<td colspan="3">${requestScope.note}</td>
+	                                </tr>
+	                             </c:if>	
+                    	</c:forEach>
                     </tbody>
                 </table>
             </card-footer>

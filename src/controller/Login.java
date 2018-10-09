@@ -32,7 +32,25 @@ public class Login extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		String path = ERROR_PAGE;
+		if(request.getSession().getAttribute("login")!=null) {
+			System.out.println("TESSSSSSSSSSSS");
+			Map<String, String> login = (Map)(request.getSession().getAttribute("login"));
+			switch (login.get("position")){
+				case "員工":
+					request.getRequestDispatcher("Worktime?action=getEmpMainOnfo").include(request, response);
+					path=EMPLOYEE_PAGE;
+					break;
+				case "主管":
+					request.getRequestDispatcher("Worktime?action=getMgrMainInfo").include(request, response);
+					path=MANAGER_PAGE;
+					break;
+				case "系統管理員":
+					path=ENGINEER_PAGE;
+					break;
+			}
+		}
 		List<String> errorMsg = new ArrayList<String>();
 		Employee employee = new Employee();
 		employee.setEmpno(request.getParameter("inputUsername"));

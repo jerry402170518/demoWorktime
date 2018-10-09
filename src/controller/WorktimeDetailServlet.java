@@ -16,13 +16,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.SubmissionHistory;
 import model.WorktimeDetail;
 import service.WorktimeDetailService;
+import service.WorktimeService;
 
 public class WorktimeDetailServlet extends HttpServlet{
 		private static final long serialVersionUID = 1L;
 		
 		private WorktimeDetailService worktimeDetailService = new WorktimeDetailService();
+		private WorktimeService worktimeService = new WorktimeService();
 		
 		private static final String WRITEWORKTIMEDETAIL_PAGE = "/WEB-INF/view/worktime/empWriteWorktimeDetail.jsp";
 		private static final String WRITEWORKTIME_PAGE = "/WEB-INF/view/worktime/empWriteWorktime.jsp";
@@ -33,7 +36,7 @@ public class WorktimeDetailServlet extends HttpServlet{
 			request.setCharacterEncoding("utf-8");
 			
 			String action = request.getParameter("action");
-			System.out.println(action);
+//			System.out.println(action);
 			String page = null;
 			
 			if (request.getSession().getAttribute("login") == null) {
@@ -66,6 +69,8 @@ public class WorktimeDetailServlet extends HttpServlet{
 				//主管取得詳細工時資訊
 				case "mgrGetWorktimeDetail":
 					doMgrGetEmpWorktimeDetail(request);
+
+//					request.getRequestDispatcher("Worktime?action=searchWorktime").include(request, response);
 					request.getRequestDispatcher(WORKTIME_DETAIL_PAGE).forward(request, response);
 					break;
 				case "submitWortkime":
@@ -159,12 +164,18 @@ public class WorktimeDetailServlet extends HttpServlet{
 
 		private void doMgrGetEmpWorktimeDetail(HttpServletRequest request) {
 			// TODO Auto-generated method stub
+			System.out.println("doMgrGetEmpWorktimeDetail start");
 			String weekFirstDay = request.getParameter("weekFirstDay");
-			System.out.println(weekFirstDay);
+			String note = request.getParameter("note");
 			List<WorktimeDetail> worktimeDetailList = worktimeDetailService.mgrGetWorktimeDetailInfo(weekFirstDay);
-			System.out.println(worktimeDetailList.size());
+			if(worktimeDetailList.size() == 0) {
+				worktimeDetailList.add(null);
+			}
+			System.out.println(note);
 			request.setAttribute("worktimeDetailList", worktimeDetailList);
 			request.setAttribute("weekFirstDay",weekFirstDay);
+			request.setAttribute("note",note);
+			System.out.println("doMgrGetEmpWorktimeDetail end");
 		}
 		
 
@@ -177,7 +188,8 @@ public class WorktimeDetailServlet extends HttpServlet{
 			System.out.println(weekFirstDay);
 			worktimeDetailService.submitWortkime(empno, weekFirstDay);
 			
-			return "/Worktime?action=writeWorktime_page";
+			String submitSuccess = "success";
+			return "/Worktime?action=writeWorktime_page&submitSuccess="+submitSuccess;
 		}
 
 

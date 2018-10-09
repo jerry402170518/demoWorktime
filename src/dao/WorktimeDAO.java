@@ -11,12 +11,9 @@ import model.SubmissionHistory;
 import model.WorktimeDetail;
 
 public interface WorktimeDAO {
-	
-//	public List<SubmissionHistory> getWorktime(String empno);
 
 	public List<Integer> getHours(List<SubmissionHistory> worktimeList);
 
-	public List<SubmissionHistory> getWorktime(String empno, String searchMonth);
 
 	public boolean checkCurrentMonth(String empno);
 
@@ -43,5 +40,7 @@ public interface WorktimeDAO {
 	public List<Integer> getTotalCheck(String beginDate, String currentMonth);
 
 	public List<Integer> getTotalPass(String beginDate, String currentMonth);
+
+	public List<SubmissionHistory> getPassWorktime(String empno, String beginDate, String endDate);
 
 }
