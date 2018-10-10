@@ -26,6 +26,11 @@
 </head>
 
 <body>
+	<c:if test="${not empty deleteSuccess}">
+		<script>
+	  	 swal ( "${deleteSuccess}" ,  " " ,  "success" )
+		  </script>
+	</c:if>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
         <a class="navbar-brand" href="Employee?action=empMain_page">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
@@ -90,7 +95,7 @@
                     <tbody>
                     		<c:forEach var="worktimeDetail" items="${requestScope.worktimeDetailList}" varStatus="loop">                 			
                     				
-                    				<form method="post">
+                    				<form id="deleteForm" action="WorktimeDetail?action=deleteWorktime" method="post">
                     				<input type="hidden" name="weekFirstDay" value="${requestScope.weekFirstDay}">
                     				<tr>
                     				<td class="align-middle">
@@ -108,7 +113,7 @@
 	                                    <c:out value="${worktimeDetail.hours}"/>
 	                                </td>
 	                                <td class="align-middle">
-	                                    <input type="submit" value="刪除" class="btn btn-danger delBtn" formaction="WorktimeDetail?action=deleteWorktime">
+	                                    <input type="button" onclick="deleteFunction()" value="刪除" class="btn btn-danger delBtn">
 	                                </td>
                     			</tr>
                     			</form>
@@ -138,12 +143,12 @@
                        		 </form>
                        		 
                     		<c:if test="${not empty requestScope.errorMsg}"><tr><td colspan="5" class="text-danger">${requestScope.errorMsg}</td></tr></c:if>
-                       		 <form action="WorktimeDetail?action=submitWortkime" method="post">
+                       		 <form id="submitForm" action="WorktimeDetail?action=submitWortkime" method="post">
                        		 <input type="hidden" name="weekFirstDay" value="${requestScope.weekFirstDay}">
                             <tr>
                             	<td colspan="5" class="align-middle">
                           
-               						<button type="submit" class="btn btn-warning">提交本周工時</button>
+               						<button type="button" onclick="submitFunction()" class="btn btn-warning">提交本周工時</button>
                					</td>
                             </tr>
                             </form>
@@ -278,6 +283,36 @@
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="js/empWriteWorktimeDetail.js"></script>
+    <script>
+    function submitFunction() {
+    	  swal({
+    	    title: "是否提交?",
+    	    text: "請確定所有工時已填寫詳細!",
+    	    icon: "warning",
+    	    buttons: true,
+    	    dangerMode: true,
+    	  })
+    	  .then((willDelete) => {
+    		  if (willDelete) {
+    		   	  document.getElementById("submitForm").submit();
+    		   }
+    	  });
+    	}
+    function deleteFunction() {
+  	  swal({
+  	    title: "是否刪除?",
+  	    text: " ",
+  	    icon: "warning",
+  	    buttons: true,
+  	    dangerMode: true,
+  	  })
+  	  .then((willDelete) => {
+  		  if (willDelete) {
+  		   	  document.getElementById("deleteForm").submit();
+  		   }
+  	  });
+  	}
+    </script>
 </body>
 
 </html>

@@ -72,6 +72,7 @@ public class WorktimeServlet extends HttpServlet{
 			//查詢工時
 			case "searchWorktime":
 				try {
+					System.out.println("TEST456");
 					doGetEmpWorktime(request);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -153,7 +154,7 @@ public class WorktimeServlet extends HttpServlet{
 		String name = loginInfo.get("name");
 		String currentMonth = request.getParameter("currentMonth");
 		//alert
-		String submitSuccess = request.getParameter("submitSuccess");
+//		String submitSuccess = request.getParameter("submitSuccess");
 
 		List<String> weekLastDays = new ArrayList<String>();
 		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
@@ -174,11 +175,12 @@ public class WorktimeServlet extends HttpServlet{
 			weekLastDays.add(weekLastDay);
         }
 		
-		if(submitSuccess != null) {
-			System.out.println(submitSuccess);
-			submitSuccess = "提交成功!";
-			request.setAttribute("submitSuccess", submitSuccess);
-		}
+//		if(submitSuccess != null) {
+//			System.out.println(submitSuccess);
+//			submitSuccess = "提交成功!";
+//			request.setAttribute("submitSuccess", submitSuccess);
+//		}
+		System.out.println("TEST123");
 		request.setAttribute("hours", hours);
 		request.setAttribute("holiday", holiday);
 		request.setAttribute("weekLastDays", weekLastDays);

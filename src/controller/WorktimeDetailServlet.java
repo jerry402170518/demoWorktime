@@ -113,11 +113,12 @@ public class WorktimeDetailServlet extends HttpServlet{
 			
 			String weekFirstDay = request.getParameter("weekFirstDay");
 			worktimeDetailService.deleteWorktime(empno, currentDate, project);
+			
+			String deleteSuccess = "刪除成功";
+			request.setAttribute("deleteSuccess", deleteSuccess);
 			System.out.println("刪除成功");
 			return "/WorktimeDetail?action=writeWorktimeDetail_page&weekFirstDay=" + weekFirstDay;
 		}
-		
-
 
 		private String doInsertWorktime(HttpServletRequest request) {
 			// TODO Auto-generated method stub
@@ -188,8 +189,9 @@ public class WorktimeDetailServlet extends HttpServlet{
 			System.out.println(weekFirstDay);
 			worktimeDetailService.submitWortkime(empno, weekFirstDay);
 			
-			String submitSuccess = "success";
-			return "/Worktime?action=writeWorktime_page&submitSuccess="+submitSuccess;
+			String submitSuccess = "提交成功";
+			request.setAttribute("submitSuccess",submitSuccess);
+			return "/Worktime?action=writeWorktime_page";
 		}
 
 

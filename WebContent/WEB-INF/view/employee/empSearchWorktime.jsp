@@ -111,8 +111,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >
-                		<c:if test="${worktime.status == '已通過' }">	
+                	<c:forEach var="worktime" items="${requestScope.worktimeList}" varStatus="loop" >	
                 		<tr>
                 		   <td><c:out value="${worktime.weekFirstDay}"/>~${requestScope.weekLastDays[loop.index]}</td>
 	                 	   <td><c:out value="${worktime.status}" /></td>
@@ -149,7 +148,6 @@
 					            </div>
 					        </div>
 	                 	</tr>
-	                 	</c:if>
                 	</c:forEach>
 	                
                 </tbody>
