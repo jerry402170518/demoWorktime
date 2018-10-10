@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import model.NoSubmitWorktime;
 import model.SubmissionHistory;
 import model.WorktimeDetail;
@@ -140,33 +142,83 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 		return true;
 	}
 
+	
 	@Override
 	public List<SubmissionHistory> mgrSearchWorktime(String nameOrEmpno, String inputSearch,String inputMonth) {
 		// TODO Auto-generated method stub
 		List<SubmissionHistory> worktimeList = new ArrayList<SubmissionHistory>();
-		
-		
+		System.out.println(nameOrEmpno+"A");
+		System.out.println(inputSearch+"A");
+		System.out.println(inputMonth+"A");
 		try {
+//			StringBuilder sql = new StringBuilder();
+//			sql.append("select employee.empno,  employee.name, submission_history.* ");
+//			sql.append("from submission_history ");
+//			sql.append("inner join employee on submission_history.empno = employee.empno ");
+//			if(nameOrEmpno != null && !nameOrEmpno.trim().isEmpty()) {
+//				System.out.println(nameOrEmpno +" is not null and empty");
+//				if(inputSearch != null && !inputSearch.trim().isEmpty()) {
+//					System.out.println(inputSearch +" is not null and empty");
+//					if(nameOrEmpno.equals("name")) {
+//						sql.append("where employee.name = ? ");
+//					}else {
+//						sql.append("where employee.empno = ? ");
+//					}
+//				}
+//			}
+//			if(inputMonth != null && !inputMonth.trim().isEmpty()){
+//				System.out.println(inputMonth +" is not null and empty");
+//				sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
+//				sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
+//			}
+//			sql.append("order by week_first_day");
+//			conn = ConnectionHelper.getConnection();
+//			pstmt = conn.prepareStatement(sql.toString());
+//			if(nameOrEmpno != null && !nameOrEmpno.trim().isEmpty()) {
+//				System.out.println(nameOrEmpno +" is not null and empty A");
+//				if(inputSearch != null && !inputSearch.trim().isEmpty()) {
+//					System.out.println(inputSearch +" is not null and empty A");
+//					pstmt.setString(1,inputSearch);
+//				}
+//			}
+//			if(inputMonth != null && !inputMonth.trim().isEmpty()){
+//				System.out.println(inputMonth +" is not null and empty A");
+//				if(inputSearch != null && !inputSearch.trim().isEmpty()) {
+//					pstmt.setString(1,inputMonth);
+//					pstmt.setString(2,inputMonth);
+//				}else {
+//					pstmt.setString(2,inputMonth);
+//					pstmt.setString(3,inputMonth);
+//				}
+//			}
+//			rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				worktimeList.add(createWorktime(rs));
+//			}
 			StringBuilder sql = new StringBuilder();
 			sql.append("select employee.empno,  employee.name, submission_history.* ");
 			sql.append("from submission_history ");
 			sql.append("inner join employee on submission_history.empno = employee.empno ");
-			if(nameOrEmpno.equals("name")) {
-				sql.append("where employee.name = ?");
-			}else {
-				sql.append("where employee.empno = ?");
-			}
-			if(!inputMonth.isEmpty()){
-				sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
-				sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
+			if(nameOrEmpno != null && !nameOrEmpno.trim().isEmpty()) {
+				if(nameOrEmpno.equals("name")) {
+					sql.append("where employee.name = ?");
+				}else {
+					sql.append("where employee.empno = ?");
+				}
+				if(inputMonth !=null && !inputMonth.trim().isEmpty()){
+					sql.append("and week_first_day >= TO_DATE(?,'YYYY-MM') ");
+					sql.append("and week_first_day < ADD_MONTHS(TO_DATE(?,'YYYY-MM'),1) ");
+				}
 			}
 			sql.append("order by week_first_day");
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,inputSearch);
-			if(!inputMonth.isEmpty()){
-				pstmt.setString(2,inputMonth);
-				pstmt.setString(3,inputMonth);
+			if(nameOrEmpno != null && !nameOrEmpno.trim().isEmpty()) {
+				pstmt.setString(1,inputSearch);
+				if(inputMonth !=null && !inputMonth.trim().isEmpty()){
+					pstmt.setString(2,inputMonth);
+					pstmt.setString(3,inputMonth);
+				}
 			}
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -412,14 +464,18 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 			sql.append("where week_first_day ");
 			sql.append("between TO_DATE( ? ,'YYYY-MM-DD') " );
 			sql.append("and TO_DATE( ? ,'YYYY-MM-DD') ");
-			sql.append("and empno = ? ");
+			if(empno != null) {
+				sql.append("and empno = ? ");
+			}
 			sql.append("order by week_first_day ");
 			
 			conn = ConnectionHelper.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1,beginDate);
 			pstmt.setString(2,endDate);
-			pstmt.setString(3,empno);
+			if(empno != null) {
+				pstmt.setString(3,empno);
+			}
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {

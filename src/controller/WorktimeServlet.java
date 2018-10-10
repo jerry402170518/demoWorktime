@@ -90,16 +90,17 @@ public class WorktimeServlet extends HttpServlet{
 				break;
 			//主管查詢員工工時
 			case "mgrSearchWorktime":
-				doSearchEmpWorktime(request);
+				searchEmpWorktime(request);
 				request.getRequestDispatcher(SEARCHEMPWORKTIME_PAGE).forward(request, response);
 				break;
 			//轉交至主管審核工時頁面
 			case "mgrCheckWorktime_page":
+				searchEmpWorktime(request);
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
 				break;
 			//主管查詢欲審核之工時:
 			case "mgrSearchCheckWorktime":
-				doSearchEmpWorktime(request);
+				searchEmpWorktime(request);
 				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
 				break;
 			//轉交至主管催繳工時頁面
@@ -115,13 +116,13 @@ public class WorktimeServlet extends HttpServlet{
 				break;
 			//主管審核工時為未通過
 			case "worktimeCheckNoPass":
-				checkNoPass(request);
-				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				page = checkNoPass(request);
+				request.getRequestDispatcher(page).forward(request, response);
 				break;
 			//主管審核工時為已通過
 			case "worktimeCheckPass":
-				checkPass(request);
-				request.getRequestDispatcher(MGR_CHECK_WORKTIME_PAGE).forward(request, response);
+				page = checkPass(request);
+				request.getRequestDispatcher(page).forward(request, response);
 				break;
 			//取得未繳交與未通過筆數
 			case "getEmpMainOnfo":
@@ -153,8 +154,6 @@ public class WorktimeServlet extends HttpServlet{
 		String empno = loginInfo.get("empno");
 		String name = loginInfo.get("name");
 		String currentMonth = request.getParameter("currentMonth");
-		//alert
-//		String submitSuccess = request.getParameter("submitSuccess");
 
 		List<String> weekLastDays = new ArrayList<String>();
 		List<SubmissionHistory> worktimeList = worktimeService.getWorktimeInfo(empno, currentMonth);
@@ -175,11 +174,6 @@ public class WorktimeServlet extends HttpServlet{
 			weekLastDays.add(weekLastDay);
         }
 		
-//		if(submitSuccess != null) {
-//			System.out.println(submitSuccess);
-//			submitSuccess = "提交成功!";
-//			request.setAttribute("submitSuccess", submitSuccess);
-//		}
 		System.out.println("TEST123");
 		request.setAttribute("hours", hours);
 		request.setAttribute("holiday", holiday);
@@ -187,32 +181,55 @@ public class WorktimeServlet extends HttpServlet{
 		request.setAttribute("worktimeList", worktimeList);
 	}
 
-	private void doSearchEmpWorktime(HttpServletRequest request) {
+	private void searchEmpWorktime(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		String inputMonth  = request.getParameter("inputMonth");
 		String nameOrEmpno = request.getParameter("nameOrEmpno");
 		String inputSearch = request.getParameter("inputSearch");
 		System.out.println(inputMonth);
+		System.out.println(nameOrEmpno);
 		System.out.println(inputSearch);
 		List<SubmissionHistory> worktimeList = new ArrayList<>();
 		
-	
-		//只輸入姓名或員編
-		if(inputMonth.isEmpty() && !inputSearch.isEmpty()) {
-			System.out.println("只輸入姓名或員編");
-			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+		if(inputMonth == null || inputMonth.trim().isEmpty()) {
+			if(inputSearch == null || inputSearch.trim().isEmpty()) {
+				//都未輸入
+				System.out.println("都未輸入");
+				worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+				
+			}else {
+				//只輸入姓名或員編
+				System.out.println("只輸入姓名或員編");
+				worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+			}
+		}else {
+			if(inputSearch == null || inputSearch.trim().isEmpty()) {
+				//只輸入月份
+				String empno = null;
+				System.out.println("只輸入月份");
+				worktimeList = worktimeService.getWorktimeInfo(empno, inputMonth);
+			}else {
+				//姓名與員編都輸入
+				System.out.println("姓名與員編都輸入");
+				worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+			}
 		}
-		//只輸入月份
-		if(!inputMonth.isEmpty() && inputSearch.isEmpty()) {
-			String empno = null;
-			System.out.println("只輸入月份");
-			worktimeList = worktimeService.getWorktimeInfo(empno, inputMonth);
-		}
-		//姓名與員編都輸入
-		if(!inputMonth.isEmpty() && !inputSearch.isEmpty()) {
-			System.out.println("姓名與員編都輸入");
-			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
-		}
+//		//只輸入姓名或員編
+//		if(inputMonth.isEmpty() && !inputSearch.isEmpty()) {
+//			System.out.println("只輸入姓名或員編");
+//			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+//		}
+//		//只輸入月份
+//		if(!inputMonth.isEmpty() && inputSearch.isEmpty()) {
+//			String empno = null;
+//			System.out.println("只輸入月份");
+//			worktimeList = worktimeService.getWorktimeInfo(empno, inputMonth);
+//		}
+//		//姓名與員編都輸入
+//		if(!inputMonth.isEmpty() && !inputSearch.isEmpty()) {
+//			System.out.println("姓名與員編都輸入");
+//			worktimeList = worktimeService.mgrSearchWorktime(nameOrEmpno, inputSearch, inputMonth);
+//		}
 		//查無資料，直接轉交頁面
 		if(worktimeList.size() == 0) {
 			System.out.println("查無資料，直接轉交頁面");
@@ -253,19 +270,28 @@ public class WorktimeServlet extends HttpServlet{
 	}
 
 
-	private void checkPass(HttpServletRequest request) {
+	private String checkPass(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		String submssionId = request.getParameter("submssionId");
 		System.out.println(submssionId);
 		worktimeService.checkPass(submssionId);
+		
+		String checkSuccess = "審核成功!";
+		request.setAttribute("checkSuccess", checkSuccess);
+
+		return "/Worktime?action=mgrSearchCheckWorktime";
 	}
 
-	private void checkNoPass(HttpServletRequest request) {
+	private String checkNoPass(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		String submssionId = request.getParameter("submssionId");
 		String noPassReason = request.getParameter("noPassReason");
 		System.out.println(noPassReason);
 		worktimeService.checkNoPass(submssionId,noPassReason);
+		
+		String checkSuccess = "審核成功!";
+		request.setAttribute("checkSuccess", checkSuccess);
+		return "/Worktime?action=mgrSearchCheckWorktime";
 	}
 
 
