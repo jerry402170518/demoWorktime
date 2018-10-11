@@ -35,11 +35,6 @@
 </head>
 
 <body>
-	<c:if test="${not empty checkSuccess}">
-		<script>
-	  	 swal ( "${checkSuccess}" ,  " " ,  "success" )
-		  </script>
-	</c:if>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 font-weight-bold">
         <a class="navbar-brand" href="Employee?action=mgrMain_page">工時系統</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
@@ -87,6 +82,11 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
+    <c:if test="${not empty checkSuccess}">
+		<script>
+	  	 swal ( "${checkSuccess}" ,  " " ,  "success" )
+		  </script>
+	</c:if>
     <div class="container-fluid">
         <div class="card mt-4 d-flex rounded-0">
             <div class="card-header text-center h4 font-weight-bold">

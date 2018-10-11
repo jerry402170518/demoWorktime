@@ -265,8 +265,16 @@ public class WorktimeServlet extends HttpServlet{
 	private void doUrgeWorktime(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		//取得最新的催繳日期
-		List<NoSubmitWorktime> noSubmotWorktimeList = worktimeService.getNewstUrgeDate();
-		worktimeService.urgeEmployee(noSubmotWorktimeList);
+		List<NoSubmitWorktime> noSubmitWorktimeList = worktimeService.getNewstUrgeDate();
+		System.out.println(noSubmitWorktimeList.size()+"AA");
+		System.out.println(noSubmitWorktimeList.get(0).getUrgeDate()+"AA");
+		if(worktimeService.urgeEmployee(noSubmitWorktimeList) == true) {
+			String callSuccess = "催繳成功!";
+			request.setAttribute("callSuccess", callSuccess);
+		}else {
+			String alreadyCall = "今天已催繳所有工時!";
+			request.setAttribute("alreadyCall", alreadyCall);
+		}
 	}
 
 

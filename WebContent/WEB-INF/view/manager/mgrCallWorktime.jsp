@@ -74,6 +74,16 @@
                 <i class="fas fa-sign-out-alt mr-1"></i>登出</a>
         </div>
     </nav>
+	<c:if test="${not empty alreadyCall}">
+		<script>
+	  	 swal ( "${alreadyCall}" ,  " 一天只限催繳一次! " ,  "error" )
+		  </script>
+	</c:if>
+	<c:if test="${not empty callSuccess}">
+		<script>
+	  	 swal ( "${callSuccess}" ,  " 已寄發催繳信件! " ,  "success" )
+		  </script>
+	</c:if>
     <div class="container mt-4">
         <div class="row justify-content-center h5 alert alert-danger font-weight-bold">
             一天只限催繳一次

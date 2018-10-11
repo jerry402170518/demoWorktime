@@ -2,6 +2,7 @@ package service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -46,34 +47,40 @@ public class WorktimeService {
 	}
 	
 	
-	public void urgeEmployee(List<NoSubmitWorktime> noSubmotWorktimeList) {
+	public Boolean urgeEmployee(List<NoSubmitWorktime> noSubmitWorktimeList) {
 		// TODO Auto-generated method stub
 		//判斷urgeDate 是否為當日，true代表今日已催繳，從noSubmotWorktimeList把此筆物件移除
-		for(int i = 0; i < noSubmotWorktimeList.size(); i++) {
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
-			if(noSubmotWorktimeList.get(i).getUrgeDate() == null) {
+		List<NoSubmitWorktime> callWorktimeList = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = sdf.format(cal.getTime());
+		for(int i = 0; i < noSubmitWorktimeList.size(); i++) {
+			if(noSubmitWorktimeList.get(i).getUrgeDate() == null) {
+				callWorktimeList.add((noSubmitWorktimeList.get(i)));
 				continue;
 			}
-			String urgeDate = sdf.format(noSubmotWorktimeList.get(i).getUrgeDate());
-			String currentDate = sdf.format(cal.getTime());
-			if(urgeDate.equals(currentDate)) {
-				noSubmotWorktimeList.remove(i);
+			String urgeDate = sdf.format(noSubmitWorktimeList.get(i).getUrgeDate());
+			System.out.println(urgeDate + i);
+			if(!urgeDate.equals(currentDate)) {
+				callWorktimeList.add((noSubmitWorktimeList.get(i)));
 			}
 		}
-		
-		for(int i = 0;i < noSubmotWorktimeList.size(); i++) {
+		System.out.println(callWorktimeList.size()+"~~~");
+		if(callWorktimeList.size() == 0) {
+			return false;
+		}
+		for(int i = 0;i < callWorktimeList.size(); i++) {
 			EmailService emailService = new EmailService();
 			StringBuilder html = new StringBuilder();
 			html.append("<style>.border{border:1px solid gray;height: 1px;}</style>");
 			html.append("<center><h1>工時系統-工時尚未繳交</h1>");
 			html.append("<div class='border'></div>");
 			html.append("<p>您的工時尚未繳交，請盡速填寫並繳交</p>");
-			html.append("<p>員工:" + noSubmotWorktimeList.get(i).getName() + "</p>");
-			html.append("<p>員編:" + noSubmotWorktimeList.get(i).getEmpno()+ "</p>");
-			html.append("<p>周別起始日:" + noSubmotWorktimeList.get(i).getWeekFirstdate()+"</p></center>");
+			html.append("<p>員工:" + callWorktimeList.get(i).getName() + "</p>");
+			html.append("<p>員編:" + callWorktimeList.get(i).getEmpno()+ "</p>");
+			html.append("<p>周別起始日:" + callWorktimeList.get(i).getWeekFirstdate()+"</p></center>");
 			
-			String email = noSubmotWorktimeList.get(i).getEmail();
+			String email = callWorktimeList.get(i).getEmail();
 			String title = "工時尚未繳交";
 			try {
 				emailService.sendHtmlMail(email, title, html.toString());
@@ -88,8 +95,8 @@ public class WorktimeService {
 			}
 		}
 	
-		
-		wDao.urgeEmployee(noSubmotWorktimeList);
+		wDao.urgeEmployee(callWorktimeList);
+		return true;
 	}
 
 	public void checkPass(String submssionId) {

@@ -305,7 +305,7 @@ public class WorktimeDAOJDBC implements WorktimeDAO{
 				noSubmitWorktime.setWeekFirstdate(rs.getDate("WEEK_FIRST_DAY"));
 				noSubmitWorktime.setEmpno(rs.getString("EMPNO"));
 				noSubmitWorktime.setName(rs.getString("NAME"));
-				noSubmitWorktime.setUrgeDate(rs.getDate("news_urge_date"));
+				noSubmitWorktime.setUrgeDate(rs.getDate("NEWS_URGE_DATE"));
 				noSubmitWorktime.setId(rs.getInt("ID"));
 				noSubmitWorktime.setEmail(rs.getString("EMAIL"));
 				noSubmitWorktimeList.add(noSubmitWorktime);
